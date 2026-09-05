@@ -10,26 +10,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-def get_embedding(text: str, provider: str = None) -> list[float]:
+def get_embedding(text: str) -> list[float]:
     """
-    取得文字的 embedding 向量。
+    取得文字的 embedding 向量 (限定使用 Gemini)。
 
     Args:
         text: 要向量化的文字
-        provider: "gemini" 或 "openai"，預設讀取 .env 的 LLM_PROVIDER
 
     Returns:
         float list — embedding 向量
     """
-    if provider is None:
-        provider = os.getenv("LLM_PROVIDER", "gemini")
-
-    if provider == "gemini":
-        return _embed_gemini(text)
-    elif provider == "openai":
-        return _embed_openai(text)
-    else:
-        raise ValueError(f"不支援的 embedding provider: {provider}")
+    return _embed_gemini(text)
 
 
 def cosine_similarity(vec1: list[float], vec2: list[float]) -> float:
@@ -76,17 +67,4 @@ def _embed_gemini(text: str) -> list[float]:
     return result.embeddings[0].values
 
 
-def _embed_openai(text: str) -> list[float]:
-    """使用 OpenAI Embedding API"""
-    from openai import OpenAI
 
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        raise ValueError("OPENAI_API_KEY 未設定，請檢查 .env 檔案")
-
-    client = OpenAI(api_key=api_key)
-    response = client.embeddings.create(
-        model="text-embedding-3-small",
-        input=text,
-    )
-    return response.data[0].embedding
