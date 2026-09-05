@@ -94,11 +94,20 @@ def analyze_impact(
         for c in relevant_companies
     )
 
+    from core.finbert_service import FinbertService
+    finbert = FinbertService()
+    finbert_result = finbert.analyze(news_title + " " + news_content)
+    finbert_context = f"FinBERT 預測情緒: {finbert_result['label']} (信心度: {finbert_result['score']:.2f})"
+
     user_prompt = f"""## 新聞標題
 {news_title}
 
 ## 新聞全文
 {news_content}
+
+## AI 量化情緒指標
+{finbert_context}
+(請在判斷各公司影響時，將此整體新聞情緒做為基礎參考)
 
 ## 相關公司（已由相關性分析模組判定）
 {companies_info}

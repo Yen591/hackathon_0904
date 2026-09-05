@@ -408,7 +408,7 @@ def print_results():
         db.close()
 
 
-def run_full_pipeline(use_demo: bool = False):
+def run_full_pipeline(use_demo: bool = False, skip_crawl: bool = False):
     """執行完整 Pipeline"""
     start_time = datetime.now()
     logger.info("🚀 Market Sentinel Pipeline 開始執行")
@@ -434,6 +434,22 @@ def run_full_pipeline(use_demo: bool = False):
             logger.error(f"儲存 Demo 新聞失敗: {e}")
         finally:
             db.close()
+    elif skip_crawl:
+        logger.info("跳過爬蟲，使用資料庫中既有的原始新聞")
+        db = SessionLocal()
+        raw_news = [
+            {
+                "raw_id": r.raw_id,
+                "source": r.source,
+                "url": r.url,
+                "title": r.title,
+                "content": r.content,
+                "published_at": r.published_at.isoformat() if r.published_at else None,
+                "crawled_at": r.crawled_at.isoformat() if r.crawled_at else None
+            }
+            for r in db.query(RawNews).all()
+        ]
+        db.close()
     else:
         raw_news = step_crawl()
 
@@ -465,7 +481,9 @@ def main():
     parser.add_argument("--init", action="store_true", help="初始化資料庫 + 載入公司種子資料")
     parser.add_argument("--test", action="store_true", help="用測試新聞跑 Demo（不爬蟲）")
     parser.add_argument("--crawl-only", action="store_true", help="只爬蟲不分析")
+    parser.add_argument("--skip-crawl", action="store_true", help="跳過爬蟲，直接分析資料庫既有新聞")
     parser.add_argument("--results", action="store_true", help="列印最新分析結果")
+    parser.add_argument("--email", action="store_true", help="執行完畢後寄送分析報告")
     args = parser.parse_args()
 
     if args.init:
@@ -481,8 +499,12 @@ def main():
         logger.info("自動匯出最新分析結果至 CSV (供 Power BI 使用)...")
         db = SessionLocal()
         _auto_export_csv(db)
+        _auto_export_html(db)
         db.close()
         logger.info("Market Sentinel 執行完畢！")
+        if args.email:
+            logger.info("[Mock] 正在寄送報告給 admin@marketsentinel.com ...")
+            logger.info("[Mock] 寄送成功！")
     elif args.crawl_only:
         init_db()
         step_crawl()
@@ -490,13 +512,17 @@ def main():
         init_db()
         print_results()
     else:
-        run_full_pipeline(use_demo=False)
+        run_full_pipeline(use_demo=False, skip_crawl=args.skip_crawl)
         # === 新增：自動匯出 CSV 供 Power BI 讀取 ===
         logger.info("自動匯出最新分析結果至 CSV (供 Power BI 使用)...")
         db = SessionLocal()
         _auto_export_csv(db)
+        _auto_export_html(db)
         db.close()
         logger.info("Market Sentinel 執行完畢！")
+        if args.email:
+            logger.info("[Mock] 正在寄送報告給 admin@marketsentinel.com ...")
+            logger.info("[Mock] 寄送成功！")
 
 def _auto_export_csv(db: Session):
     """將最新的資料匯出至 data/market_sentinel_export.csv"""
@@ -531,6 +557,81 @@ def _auto_export_csv(db: Session):
                 imp.market_direction, imp.impact_score, imp.surprise_score,
                 imp.time_horizon, imp.classification, imp.confidence
             ])
+def _auto_export_html(db: Session):
+    """將最新的資料匯出至 data/dashboard.html"""
+    import os
+    from models import ImpactAnalysis, Event, Company
+    
+    results = (
+        db.query(ImpactAnalysis, Event, Company)
+        .join(Event, ImpactAnalysis.event_id == Event.event_id)
+        .join(Company, ImpactAnalysis.company_id == Company.company_id)
+        .order_by(Event.first_reported_at.desc())
+        .limit(50)
+        .all()
+    )
+    
+    data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
+    os.makedirs(data_dir, exist_ok=True)
+    html_path = os.path.join(data_dir, "dashboard.html")
+    
+    html_content = """<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Market Sentinel - AI 分析儀表板</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f4f7f6; margin: 0; padding: 20px; }
+        .container { max-width: 1200px; margin: auto; background: white; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1 { color: #333; text-align: center; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #007bff; color: white; }
+        tr:hover { background-color: #f1f1f1; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 0.9em; font-weight: bold; color: white; }
+        .bullish { background-color: #28a745; }
+        .bearish { background-color: #dc3545; }
+        .neutral { background-color: #6c757d; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Market Sentinel - 最新新聞 AI 影響分析</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>相關公司</th>
+                    <th>事件標題</th>
+                    <th>市場方向</th>
+                    <th>Impact Score</th>
+                    <th>AI 分析筆記</th>
+                </tr>
+            </thead>
+            <tbody>
+"""
+    for imp, event, comp in results:
+        direction_class = "bullish" if imp.market_direction == "Bullish" else ("bearish" if imp.market_direction == "Bearish" else "neutral")
+        html_content += f"""
+                <tr>
+                    <td>{comp.company_name}</td>
+                    <td>{event.event_title}</td>
+                    <td><span class="badge {direction_class}">{imp.market_direction}</span></td>
+                    <td>{imp.impact_score}</td>
+                    <td>{imp.analysis_notes}</td>
+                </tr>
+"""
+
+    html_content += """
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
+"""
+
+    with open(html_path, "w", encoding="utf-8") as f:
+        f.write(html_content)
+    logger.info(f"成功產生儀表板: {html_path}")
 
 if __name__ == "__main__":
     main()

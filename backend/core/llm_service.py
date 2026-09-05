@@ -73,7 +73,8 @@ def _call_openai(prompt: str, system_prompt: str) -> str:
 
 
 def _call_gemini(prompt: str, system_prompt: str) -> str:
-    import google.generativeai as genai
+    from google import genai
+    from google.genai import types
     
     api_key = os.getenv("GEMINI_API_KEY")
     model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
@@ -81,15 +82,16 @@ def _call_gemini(prompt: str, system_prompt: str) -> str:
     if not api_key:
         raise ValueError("GEMINI_API_KEY 未設定，請檢查 .env 檔案")
     
-    genai.configure(api_key=api_key)
-    model = genai.GenerativeModel(
-        model_name=model_name,
-        system_instruction=system_prompt if system_prompt else None,
-    )
+    client = genai.Client(api_key=api_key)
     
-    response = model.generate_content(
-        prompt,
-        generation_config=genai.types.GenerationConfig(temperature=0.3),
+    config = types.GenerateContentConfig(temperature=0.3)
+    if system_prompt:
+        config.system_instruction = system_prompt
+
+    response = client.models.generate_content(
+        model=model_name,
+        contents=prompt,
+        config=config,
     )
     
     return response.text

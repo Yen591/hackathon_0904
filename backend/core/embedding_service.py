@@ -58,19 +58,22 @@ def json_to_embedding(json_str: str) -> list[float]:
 
 def _embed_gemini(text: str) -> list[float]:
     """使用 Gemini Embedding API"""
-    import google.generativeai as genai
+    from google import genai
+    from google.genai import types
 
     api_key = os.getenv("GEMINI_API_KEY")
     if not api_key:
         raise ValueError("GEMINI_API_KEY 未設定，請檢查 .env 檔案")
 
-    genai.configure(api_key=api_key)
-    result = genai.embed_content(
-        model="models/gemini-embedding-001",
-        content=text,
-        task_type="semantic_similarity",
+    client = genai.Client(api_key=api_key)
+    result = client.models.embed_content(
+        model="gemini-embedding-1",
+        contents=text,
+        config=types.EmbedContentConfig(
+            task_type="SEMANTIC_SIMILARITY",
+        )
     )
-    return result["embedding"]
+    return result.embeddings[0].values
 
 
 def _embed_openai(text: str) -> list[float]:
