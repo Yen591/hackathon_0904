@@ -61,23 +61,6 @@ DEMO_NEWS = [
         "published_at": datetime.now().isoformat(),
         "crawled_at": datetime.now().isoformat(),
     },
-    {
-        "raw_id": "demo-004",
-        "source": "工商時報",
-        "url": "https://example.com/demo-004",
-        "title": "鴻海電動車事業傳獲大單，股價創新高",
-        "content": (
-            "鴻海集團旗下 MIH 電動車開放平台傳出重大進展，"
-            "成功取得歐洲某知名車廠的電動車代工大單，預計年產量達 10 萬輛。"
-            "這是鴻海跨足電動車領域以來最大的訂單，"
-            "市場預估將為鴻海帶來每年超過 500 億元的營收貢獻。"
-            "分析師指出，此訂單證明鴻海的電動車代工模式獲得國際認可，"
-            "未來可望吸引更多車廠合作，帶動整體電動車供應鏈成長。"
-            "連帶零組件供應商如和碩、台達電等也有望受惠。"
-        ),
-        "published_at": datetime.now().isoformat(),
-        "crawled_at": datetime.now().isoformat(),
-    },
 ]
 
 

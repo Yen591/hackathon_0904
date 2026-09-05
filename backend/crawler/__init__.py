@@ -3,7 +3,6 @@
 """
 import logging
 from crawler.udn_crawler import scrape_udn_news
-from crawler.chinatimes_crawler import scrape_chinatimes_news
 
 logger = logging.getLogger(__name__)
 
@@ -34,14 +33,7 @@ def crawl_all_sources(crawled_urls: set[str] = None) -> list[dict]:
     except Exception as e:
         logger.error(f"經濟日報爬蟲失敗（不中斷流程）: {e}")
 
-    # 工商時報
-    try:
-        ctee_news = scrape_chinatimes_news(crawled_urls)
-        all_news.extend(ctee_news)
-        crawled_urls.update(n["url"] for n in ctee_news)
-        logger.info(f"工商時報：{len(ctee_news)} 篇")
-    except Exception as e:
-        logger.error(f"工商時報爬蟲失敗（不中斷流程）: {e}")
+    # (Removed 工商時報)
 
     logger.info(f"所有來源爬取完成，共 {len(all_news)} 篇新聞")
     return all_news
