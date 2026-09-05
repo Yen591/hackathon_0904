@@ -10,7 +10,7 @@ venv/
 
 # Database
 data/*.db
-
+data/pipeline.log
 # IDE
 .vscode/
 .idea/
