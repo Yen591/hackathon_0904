@@ -21,10 +21,9 @@
             </div>
             
             <nav class="main-nav">
-                <a href="#" class="nav-item active"><i class='bx bx-grid-alt'></i> 總覽儀表板</a>
-                <a href="#" class="nav-item"><i class='bx bx-news'></i> 即時事件監控</a>
-                <a href="#" class="nav-item"><i class='bx bx-buildings'></i> 供應鏈追蹤</a>
-                <a href="#" class="nav-item"><i class='bx bx-analyse'></i> 深度分析報告</a>
+                <a href="#" class="nav-item active" data-target="view-overview"><i class='bx bx-news'></i> 即時事件監控</a>
+                <a href="#" class="nav-item" data-target="view-supplychain"><i class='bx bx-buildings'></i> 供應鏈追蹤</a>
+                <a href="#" class="nav-item" data-target="view-report"><i class='bx bx-analyse'></i> 深度分析報告</a>
             </nav>
 
             <div class="sidebar-footer">
@@ -38,8 +37,8 @@
         <main class="main-content">
             <header class="top-header">
                 <div class="page-title">
-                    <h2>即時市場事件分析</h2>
-                    <p class="subtitle">AI 聚合市場事件並預測供應鏈影響力</p>
+                    <h2 id="page-title-text">即時市場事件分析</h2>
+                    <p class="subtitle" id="page-subtitle-text">AI 聚合市場事件並預測供應鏈影響力</p>
                 </div>
                 <div class="header-actions">
                     <div class="status-indicator">
@@ -48,33 +47,81 @@
                 </div>
             </header>
 
-            <div class="dashboard-grid">
-                <!-- Events List Panel -->
-                <section class="events-panel glass-panel">
-                    <div class="panel-header">
-                        <h3><i class='bx bx-list-ul'></i> 最新市場事件</h3>
-                        <span class="badge" id="event-count">0</span>
-                    </div>
-                    <div class="events-list" id="events-list">
-                        <!-- Events will be populated here by JS -->
-                        <div class="loading-spinner">載入資料中...</div>
-                    </div>
-                </section>
+            <!-- VIEW 1: 即時事件監控 (Overview) -->
+            <div id="view-overview" class="view-section active">
+                <div class="dashboard-grid">
+                    <!-- Events List Panel -->
+                    <section class="events-panel glass-panel">
+                        <div class="panel-header">
+                            <h3><i class='bx bx-list-ul'></i> 最新市場事件</h3>
+                            <span class="badge" id="event-count">0</span>
+                        </div>
+                        <div class="events-list" id="events-list">
+                            <div class="loading-spinner">載入資料中...</div>
+                        </div>
+                    </section>
 
-                <!-- Impact Details Panel -->
-                <section class="impact-panel glass-panel">
-                    <div class="panel-header">
-                        <h3><i class='bx bx-target-lock'></i> 供應鏈影響分析</h3>
+                    <!-- Impact Details Panel -->
+                    <section class="impact-panel glass-panel">
+                        <div class="panel-header">
+                            <h3><i class='bx bx-target-lock'></i> 事件影響分析</h3>
+                        </div>
+                        <div class="impact-content" id="impact-content">
+                            <div class="empty-state">
+                                <i class='bx bx-pointer'></i>
+                                <p>請從左側選擇一個事件查看影響力分析</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- VIEW 2: 供應鏈追蹤 (Supply Chain) -->
+            <div id="view-supplychain" class="view-section" style="display: none;">
+                <div class="dashboard-grid">
+                    <!-- Companies List Panel -->
+                    <section class="companies-panel glass-panel">
+                        <div class="panel-header">
+                            <h3><i class='bx bx-buildings'></i> 監控企業清單</h3>
+                        </div>
+                        <div class="events-list" id="companies-list">
+                            <div class="loading-spinner">載入資料中...</div>
+                        </div>
+                    </section>
+
+                    <!-- Company Impacts Panel -->
+                    <section class="impact-panel glass-panel">
+                        <div class="panel-header">
+                            <h3><i class='bx bx-history'></i> 企業近期受影響紀錄</h3>
+                        </div>
+                        <div class="impact-content" id="company-impact-content">
+                            <div class="empty-state">
+                                <i class='bx bx-pointer'></i>
+                                <p>請從左側選擇一間企業查看其近期影響紀錄</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <!-- VIEW 3: 深度分析報告 (Report) -->
+            <div id="view-report" class="view-section" style="display: none; height: 100%;">
+                <section class="report-panel glass-panel" style="height: 100%; display: flex; flex-direction: column;">
+                    <div class="panel-header" style="justify-content: space-between; display: flex;">
+                        <h3><i class='bx bx-file'></i> 今日市場總結報告</h3>
+                        <button id="generate-report-btn" class="primary-btn" style="width: auto;">
+                            <i class='bx bx-bot'></i> AI 重新生成報告
+                        </button>
                     </div>
-                    <div class="impact-content" id="impact-content">
-                        <!-- Default state -->
+                    <div class="report-content" id="report-content" style="padding: 24px; overflow-y: auto; flex: 1;">
                         <div class="empty-state">
-                            <i class='bx bx-pointer'></i>
-                            <p>請從左側選擇一個事件查看影響力分析</p>
+                            <i class='bx bx-bot'></i>
+                            <p>點擊右上方按鈕，讓 AI 為您總結今日市場行情</p>
                         </div>
                     </div>
                 </section>
             </div>
+
         </main>
     </div>
 

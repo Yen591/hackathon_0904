@@ -69,6 +69,9 @@ class ImpactAnalysis(Base):
     news_id = Column(String, ForeignKey("clean_news.news_id"), nullable=True)
     company_id = Column(String, ForeignKey("companies.company_id"))
     sentiment_label = Column(String)   # Positive | Neutral | Negative
+    positive_score = Column(Float)     # 0-1 機率
+    neutral_score = Column(Float)      # 0-1 機率
+    negative_score = Column(Float)     # 0-1 機率
     market_direction = Column(String)  # Bullish | Bearish | Neutral
     impact_score = Column(Float)       # 0-100
     surprise_score = Column(Float)     # 0-100

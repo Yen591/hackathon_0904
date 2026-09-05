@@ -19,6 +19,7 @@ from datetime import datetime
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from database import SessionLocal, init_db
+from sqlalchemy.orm import Session
 from models import RawNews, CleanNews, RelevanceResult, ImpactAnalysis, Company
 from core.cleaning import process_raw_news
 from core.relevance_engine import analyze_relevance
@@ -44,35 +45,35 @@ logger = logging.getLogger("MarketSentinel")
 # ===== Demo 測試新聞 =====
 DEMO_NEWS = [
     {
-        "raw_id": "demo-001",
-        "source": "測試",
-        "url": "https://example.com/demo-001",
-        "title": "全球 AI 伺服器需求增加，先進封裝產能吃緊",
+        "raw_id": "demo-003",
+        "source": "經濟日報",
+        "url": "https://example.com/demo-003",
+        "title": "台積電宣布赴日本熊本設第三座晶圓廠",
         "content": (
-            "隨著生成式 AI 應用快速普及，全球 AI 伺服器需求持續攀升。"
-            "業界指出，由於 NVIDIA 新一代 GPU 採用先進封裝技術 CoWoS，"
-            "導致封裝產能嚴重吃緊，交期已拉長至六個月以上。"
-            "供應鏈消息透露，主要晶圓代工廠已全面擴充先進封裝產能，"
-            "但短期內仍難以滿足市場需求。分析師預估，"
-            "AI 伺服器相關供應鏈將持續受惠，相關零組件廠商訂單能見度已達明年。"
-            "此外，伺服器代工廠的產能利用率也已接近滿載，"
-            "電源供應器、散熱模組等關鍵零組件需求同步增長。"
+            "台積電今日正式宣布，將於日本熊本縣興建第三座晶圓廠，"
+            "投資金額預估超過 200 億美元。新廠將導入 6 奈米及 7 奈米製程，"
+            "主要供應日本及全球車用半導體與工業應用晶片需求。"
+            "日本政府將提供高額補助，預計 2027 年量產。"
+            "業界分析，此舉將大幅強化台積電在全球的產能布局，"
+            "同時帶動日本半導體設備供應鏈與相關材料廠商的訂單成長。"
+            "受此消息激勵，半導體族群今日全面走揚。"
         ),
         "published_at": datetime.now().isoformat(),
         "crawled_at": datetime.now().isoformat(),
     },
     {
-        "raw_id": "demo-002",
-        "source": "測試",
-        "url": "https://example.com/demo-002",
-        "title": "國際油價大幅波動，石化業者面臨成本壓力",
+        "raw_id": "demo-004",
+        "source": "工商時報",
+        "url": "https://example.com/demo-004",
+        "title": "鴻海電動車事業傳獲大單，股價創新高",
         "content": (
-            "受中東地緣政治緊張影響，國際原油價格近期大幅波動，"
-            "布蘭特原油價格單週漲幅超過 8%。石化業者表示，"
-            "原油價格上漲將直接推升塑膠原料成本，包括 PVC、PE、PP 等產品價格可能調漲。"
-            "不過分析師指出，若價格能順利轉嫁下游，對石化廠商的影響有限。"
-            "同時，部分金融機構也關注油價波動對整體通膨的影響，"
-            "可能影響央行貨幣政策走向。"
+            "鴻海集團旗下 MIH 電動車開放平台傳出重大進展，"
+            "成功取得歐洲某知名車廠的電動車代工大單，預計年產量達 10 萬輛。"
+            "這是鴻海跨足電動車領域以來最大的訂單，"
+            "市場預估將為鴻海帶來每年超過 500 億元的營收貢獻。"
+            "分析師指出，此訂單證明鴻海的電動車代工模式獲得國際認可，"
+            "未來可望吸引更多車廠合作，帶動整體電動車供應鏈成長。"
+            "連帶零組件供應商如和碩、台達電等也有望受惠。"
         ),
         "published_at": datetime.now().isoformat(),
         "crawled_at": datetime.now().isoformat(),
@@ -340,6 +341,9 @@ def step_analyze(clean_news: list[dict]) -> dict:
                     event_id=event_dict["event_id"],
                     company_id=imp.get("company_id", ""),
                     sentiment_label=imp.get("sentiment_label", ""),
+                    positive_score=imp.get("positive_score", 0),
+                    neutral_score=imp.get("neutral_score", 0),
+                    negative_score=imp.get("negative_score", 0),
                     market_direction=imp.get("market_direction", ""),
                     impact_score=imp.get("impact_score", 0),
                     surprise_score=imp.get("surprise_score", 0),
@@ -467,7 +471,18 @@ def main():
     if args.init:
         step_init()
     elif args.test:
+        # 自動清除舊資料庫，確保每次 Demo 都是最新資料
+        db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "market_sentinel.db")
+        if os.path.exists(db_path):
+            os.remove(db_path)
+            logger.info("已自動清除舊資料庫")
+        step_init()
         run_full_pipeline(use_demo=True)
+        logger.info("自動匯出最新分析結果至 CSV (供 Power BI 使用)...")
+        db = SessionLocal()
+        _auto_export_csv(db)
+        db.close()
+        logger.info("Market Sentinel 執行完畢！")
     elif args.crawl_only:
         init_db()
         step_crawl()
@@ -476,7 +491,46 @@ def main():
         print_results()
     else:
         run_full_pipeline(use_demo=False)
+        # === 新增：自動匯出 CSV 供 Power BI 讀取 ===
+        logger.info("自動匯出最新分析結果至 CSV (供 Power BI 使用)...")
+        db = SessionLocal()
+        _auto_export_csv(db)
+        db.close()
+        logger.info("Market Sentinel 執行完畢！")
 
+def _auto_export_csv(db: Session):
+    """將最新的資料匯出至 data/market_sentinel_export.csv"""
+    import csv
+    import os
+    from models import ImpactAnalysis, Event, Company
+    
+    results = (
+        db.query(ImpactAnalysis, Event, Company)
+        .join(Event, ImpactAnalysis.event_id == Event.event_id)
+        .join(Company, ImpactAnalysis.company_id == Company.company_id)
+        .order_by(Event.first_reported_at.desc())
+        .all()
+    )
+    
+    data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data")
+    os.makedirs(data_dir, exist_ok=True)
+    fixed_csv_path = os.path.join(data_dir, "market_sentinel_export.csv")
+    
+    with open(fixed_csv_path, "w", encoding="utf-8-sig", newline="") as f:
+        writer = csv.writer(f, delimiter=',', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow([
+            "股票名稱", "新聞標題", "新聞摘要",
+            "Positive", "Neutral", "Negative",
+            "Sentiment", "Impact Score", "Surprise Score",
+            "Time Horizon", "Classification", "Confidence"
+        ])
+        for imp, event, comp in results:
+            writer.writerow([
+                comp.company_name, event.event_title, event.event_summary,
+                imp.positive_score, imp.neutral_score, imp.negative_score,
+                imp.market_direction, imp.impact_score, imp.surprise_score,
+                imp.time_horizon, imp.classification, imp.confidence
+            ])
 
 if __name__ == "__main__":
     main()
