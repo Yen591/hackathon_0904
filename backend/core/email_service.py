@@ -28,14 +28,43 @@ def send_daily_report(csv_path: str = None, html_path: str = None) -> bool:
     msg['To'] = receiver_email
     msg['Subject'] = "📊 Market Sentinel - 最新 AI 市場監控報告"
 
-    body = """
+    table_html = ""
+    if csv_path and os.path.exists(csv_path):
+        import csv
+        try:
+            with open(csv_path, "r", encoding="utf-8-sig") as f:
+                reader = csv.DictReader(f)
+                rows = list(reader)
+                if not rows:
+                    table_html = "<p>目前沒有新的分析結果。</p>"
+                else:
+                    table_html = '<table border="1" style="border-collapse: collapse; width: 100%; font-size: 14px;">'
+                    table_html += '<tr style="background-color: #f2f2f2;"><th style="padding: 8px;">股票名稱</th><th style="padding: 8px;">新聞標題</th><th style="padding: 8px;">情緒</th><th style="padding: 8px;">分類</th><th style="padding: 8px;">AI 分析筆記</th></tr>'
+                    for row in rows:
+                        sentiment = row.get("Sentiment", "")
+                        color = "green" if sentiment.lower() == "positive" else "red" if sentiment.lower() == "negative" else "gray"
+                        table_html += f"<tr>"
+                        table_html += f"<td style='padding: 8px;'>{row.get('股票名稱', '')}</td>"
+                        table_html += f"<td style='padding: 8px;'>{row.get('新聞標題', '')}</td>"
+                        table_html += f"<td style='padding: 8px; color: {color}; font-weight: bold;'>{sentiment}</td>"
+                        table_html += f"<td style='padding: 8px;'>{row.get('Classification', '')}</td>"
+                        table_html += f"<td style='padding: 8px;'>{row.get('AI 分析筆記', '')}</td>"
+                        table_html += f"</tr>"
+                    table_html += "</table>"
+        except Exception as e:
+            logger.error(f"讀取 CSV 產生 HTML 表格失敗: {e}")
+            table_html = "<p>產生結果表格時發生錯誤。</p>"
+    else:
+        table_html = "<p>找不到分析資料 (CSV)。</p>"
+
+    body = f"""
     <html>
     <body style="font-family: Arial, sans-serif; line-height: 1.6; color: #333;">
         <h2 style="color: #007bff;">Market Sentinel 財經新聞分析完成</h2>
-        <p>您好，</p>
-        <p>系統已自動爬取最新新聞，並由 <strong>FinBERT</strong> 與 <strong>LLM</strong> 完成情緒判定與影響評估。</p>
-        <p>詳細資料請參考附件 <strong>CSV 檔案</strong>，該檔案可直接用於更新您的 <strong>Power BI 地端儀表板</strong>。</p>
-        <p>如有需要，您也可以直接點開附件的 <strong>dashboard.html</strong> 預覽本次分析結果。</p>
+        <p>您好，以下是最新出爐的 AI 分析結果：</p>
+        {table_html}
+        <br/>
+        <p>完整詳細資料（包含各項情緒分數等）請參考附件的 <strong>CSV 檔案</strong>，或透過 <strong>dashboard.html</strong> 預覽。</p>
         <hr style="border: none; border-top: 1px solid #eee;" />
         <p style="font-size: 0.9em; color: #888;">此為系統自動發送的信件，請勿直接回覆。</p>
     </body>
