@@ -109,9 +109,14 @@
                 <section class="report-panel glass-panel" style="height: 100%; display: flex; flex-direction: column;">
                     <div class="panel-header" style="justify-content: space-between; display: flex;">
                         <h3><i class='bx bx-file'></i> 今日市場總結報告</h3>
-                        <button id="generate-report-btn" class="primary-btn" style="width: auto;">
-                            <i class='bx bx-bot'></i> AI 重新生成報告
-                        </button>
+                        <div>
+                            <button id="email-report-btn" class="primary-btn" style="width: auto; margin-right: 10px;">
+                                <i class='bx bx-envelope'></i> 寄送 Email 報告
+                            </button>
+                            <button id="generate-report-btn" class="primary-btn" style="width: auto;">
+                                <i class='bx bx-bot'></i> AI 重新生成報告
+                            </button>
+                        </div>
                     </div>
                     <div class="report-content" id="report-content" style="padding: 24px; overflow-y: auto; flex: 1;">
                         <div class="empty-state">

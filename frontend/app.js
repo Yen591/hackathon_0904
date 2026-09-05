@@ -66,6 +66,34 @@ function setupEventListeners() {
             generateReport();
         });
     }
+
+    const emailBtn = document.getElementById('email-report-btn');
+    if (emailBtn) {
+        emailBtn.addEventListener('click', async () => {
+            emailBtn.disabled = true;
+            const originalText = emailBtn.innerHTML;
+            emailBtn.innerHTML = `<i class='bx bx-loader-alt bx-spin'></i> 寄送中...`;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/report/email`, {
+                    method: 'POST'
+                });
+                
+                if (response.ok) {
+                    alert('報告已成功寄出！');
+                } else {
+                    const error = await response.json();
+                    alert(`寄送失敗：${error.detail || '請檢查後端設定'}`);
+                }
+            } catch (err) {
+                console.error('Error sending email:', err);
+                alert('寄送失敗，請確認後端運行狀態。');
+            } finally {
+                emailBtn.disabled = false;
+                emailBtn.innerHTML = originalText;
+            }
+        });
+    }
 }
 
 /* =========================================================

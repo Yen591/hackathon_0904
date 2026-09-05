@@ -248,6 +248,31 @@ def generate_daily_report(db: Session = Depends(get_db)):
     except Exception as e:
         return {"report_html": f"<p>發生錯誤: {str(e)}</p>"}
 
+@app.post("/api/report/email")
+def send_email_report(db: Session = Depends(get_db)):
+    """寄送每日市場深度分析報告至信箱"""
+    import os
+    import sys
+    from core.email_service import send_daily_report
+    
+    # 確保寄出前先產生最新的 CSV 與 HTML
+    try:
+        from main import _auto_export_csv, _auto_export_html
+        _auto_export_csv(db)
+        _auto_export_html(db)
+    except Exception as e:
+        print(f"Error exporting data before email: {e}")
+    
+    csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "market_sentinel_export.csv")
+    html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "dashboard.html")
+    
+    success = send_daily_report(csv_path=csv_path, html_path=html_path)
+    
+    if success:
+        return {"message": "Email sent successfully"}
+    else:
+        raise HTTPException(status_code=500, detail="Failed to send email. Check SMTP configuration.")
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("api:app", host="0.0.0.0", port=8000, reload=True)

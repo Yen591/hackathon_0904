@@ -5,7 +5,7 @@ Market Sentinel — 主流程 Pipeline
 使用方式：
     python main.py                  # 執行完整流程（爬蟲 + 分析）
     python main.py --init           # 初始化資料庫 + 載入公司種子資料
-    python main.py --test           # 用測試新聞跑 Demo（不爬蟲）
+    python main.py --test  p         # 用測試新聞跑 Demo（不爬蟲）
     python main.py --crawl-only     # 只爬蟲不分析
 """
 import os
