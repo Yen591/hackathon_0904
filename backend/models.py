@@ -72,11 +72,11 @@ class ImpactAnalysis(Base):
     positive_score = Column(Float)     # 0-1 機率
     neutral_score = Column(Float)      # 0-1 機率
     negative_score = Column(Float)     # 0-1 機率
-    market_direction = Column(String)  # Bullish | Bearish | Neutral
-    impact_score = Column(Float)       # 0-100
-    surprise_score = Column(Float)     # 0-100
+    market_direction = Column(String, nullable=True)  # (已精簡) 保留以維持向下相容
+    impact_score = Column(Float, nullable=True, default=0.0)
+    surprise_score = Column(Float, nullable=True, default=0.0)
     time_horizon = Column(String)      # Short-term | Long-term
     classification = Column(String)    # Signal | Noise
-    confidence = Column(Float)         # 0-1
+    confidence = Column(Float, nullable=True, default=0.0)
     analysis_notes = Column(Text)
 

@@ -162,12 +162,32 @@ def step_clean(raw_news: list[dict]) -> list[dict]:
                 content_hash=cn["content_hash"],
             ))
         db.commit()
-        logger.info(f"清理新聞儲存完成：{len(clean_news)} 篇")
+        logger.info(f"清理新聞儲存完成：{len(clean_news)} 篇新增")
     except Exception as e:
         db.rollback()
         logger.error(f"儲存清理新聞失敗: {e}")
     finally:
         db.close()
+
+    # 如果全部重複（0 篇新增），載入資料庫既有的 CleanNews 供後續分析
+    if not clean_news:
+        logger.info("無新增清理新聞，載入資料庫既有的 CleanNews 進行斷點續跑")
+        db = SessionLocal()
+        try:
+            all_clean = db.query(CleanNews).all()
+            clean_news = [
+                {
+                    "news_id": cn.news_id,
+                    "raw_id": cn.raw_id,
+                    "clean_title": cn.clean_title,
+                    "clean_content": cn.clean_content,
+                    "content_hash": cn.content_hash,
+                }
+                for cn in all_clean
+            ]
+            logger.info(f"已從資料庫載入 {len(clean_news)} 篇既有清理新聞")
+        finally:
+            db.close()
 
     logger.info("=" * 60)
     return clean_news
@@ -232,8 +252,24 @@ def step_analyze(clean_news: list[dict]) -> dict:
 
     from core.event_clustering import cluster_news_into_events
 
+    # 取得已分析過的 news_id（用於斷點續跑）
+    db = SessionLocal()
+    try:
+        analyzed_news_ids = set(
+            row[0] for row in db.query(RelevanceResult.news_id).distinct().all()
+        )
+    finally:
+        db.close()
+
+    skipped_count = 0
+
     for i, news in enumerate(clean_news):
-        logger.info(f"\n--- 分析第 {i+1}/{len(clean_news)} 篇: {news['clean_title'][:40]}... ---")
+        # 斷點續跑：跳過已分析的新聞
+        if news["news_id"] in analyzed_news_ids:
+            skipped_count += 1
+            continue
+
+        logger.info(f"\n--- 分析第 {i+1}/{len(clean_news)} 篇 (已跳過 {skipped_count} 篇已完成): {news['clean_title'][:40]}... ---")
 
         # 3. 相關性判斷
         relevance_results, news_embedding = analyze_relevance(
@@ -337,20 +373,22 @@ def step_analyze(clean_news: list[dict]) -> dict:
         db = SessionLocal()
         try:
             for imp in impact_results:
+                sentiment = imp.get("sentiment_label", "Neutral")
                 db.add(ImpactAnalysis(
                     event_id=event_dict["event_id"],
                     company_id=imp.get("company_id", ""),
-                    sentiment_label=imp.get("sentiment_label", ""),
-                    positive_score=imp.get("positive_score", 0),
-                    neutral_score=imp.get("neutral_score", 0),
-                    negative_score=imp.get("negative_score", 0),
-                    market_direction=imp.get("market_direction", ""),
-                    impact_score=imp.get("impact_score", 0),
-                    surprise_score=imp.get("surprise_score", 0),
+                    sentiment_label=sentiment,
+                    positive_score=imp.get("positive_score", 0.0),
+                    neutral_score=imp.get("neutral_score", 0.0),
+                    negative_score=imp.get("negative_score", 0.0),
                     time_horizon=imp.get("time_horizon", ""),
                     classification=imp.get("classification", ""),
-                    confidence=imp.get("confidence", 0),
                     analysis_notes=imp.get("analysis_notes", ""),
+                    # 向下相容欄位
+                    market_direction="Bullish" if sentiment == "Positive" else ("Bearish" if sentiment == "Negative" else "Neutral"),
+                    impact_score=0.0,
+                    surprise_score=0.0,
+                    confidence=1.0,
                 ))
                 total_impact += 1
 
@@ -380,25 +418,28 @@ def print_results():
             db.query(ImpactAnalysis, Event, Company)
             .join(Event, ImpactAnalysis.event_id == Event.event_id)
             .join(Company, ImpactAnalysis.company_id == Company.company_id)
-            .order_by(ImpactAnalysis.impact_score.desc())
+            .order_by(ImpactAnalysis.id.desc())
             .limit(20)
             .all()
         )
 
         for impact, event, company in results:
             signal_icon = "🔴" if impact.classification == "Signal" else "⚪"
-            direction_icon = {"Bullish": "📈", "Bearish": "📉", "Neutral": "➡️"}.get(
-                impact.market_direction, "❓"
+            sentiment_icon = {"Positive": "📈", "Negative": "📉", "Neutral": "➡️"}.get(
+                impact.sentiment_label, "➡️"
             )
 
+            pos = impact.positive_score if impact.positive_score is not None else 0.0
+            neu = impact.neutral_score if impact.neutral_score is not None else 0.0
+            neg = impact.negative_score if impact.negative_score is not None else 0.0
+
             logger.info(
-                f"\n{signal_icon} {direction_icon} [{company.ticker}] {company.company_name}\n"
+                f"\n{signal_icon} {sentiment_icon} [{company.ticker}] {company.company_name}\n"
                 f"  事件：{event.event_title}\n"
                 f"  摘要：{event.event_summary[:100]}...\n"
-                f"  情緒: {impact.sentiment_label} | 方向: {impact.market_direction}\n"
-                f"  Impact: {impact.impact_score} | Surprise: {impact.surprise_score} | 信心: {impact.confidence}\n"
+                f"  情緒: {impact.sentiment_label} (正: {pos:.2f} / 中: {neu:.2f} / 負: {neg:.2f})\n"
                 f"  時間範圍: {impact.time_horizon} | 分類: {impact.classification}\n"
-                f"  分析: {impact.analysis_notes}"
+                f"  AI 分析筆記: {impact.analysis_notes}"
             )
 
         if not results:
@@ -435,7 +476,7 @@ def run_full_pipeline(use_demo: bool = False, skip_crawl: bool = False):
         finally:
             db.close()
     elif skip_crawl:
-        logger.info("跳過爬蟲，使用資料庫中既有的原始新聞")
+        logger.info("跳過爬蟲，使用資料庫中既有的原始新聞（支援斷點續跑）")
         db = SessionLocal()
         raw_news = [
             {
@@ -444,8 +485,8 @@ def run_full_pipeline(use_demo: bool = False, skip_crawl: bool = False):
                 "url": r.url,
                 "title": r.title,
                 "content": r.content,
-                "published_at": r.published_at.isoformat() if r.published_at else None,
-                "crawled_at": r.crawled_at.isoformat() if r.crawled_at else None
+                "published_at": r.published_at,
+                "crawled_at": r.crawled_at
             }
             for r in db.query(RawNews).all()
         ]
@@ -503,8 +544,11 @@ def main():
         db.close()
         logger.info("Market Sentinel 執行完畢！")
         if args.email:
-            logger.info("[Mock] 正在寄送報告給 admin@marketsentinel.com ...")
-            logger.info("[Mock] 寄送成功！")
+            from core.email_service import send_daily_report
+            logger.info("準備寄送分析報告...")
+            csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "market_sentinel_export.csv")
+            html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "dashboard.html")
+            send_daily_report(csv_path=csv_path, html_path=html_path)
     elif args.crawl_only:
         init_db()
         step_crawl()
@@ -521,8 +565,11 @@ def main():
         db.close()
         logger.info("Market Sentinel 執行完畢！")
         if args.email:
-            logger.info("[Mock] 正在寄送報告給 admin@marketsentinel.com ...")
-            logger.info("[Mock] 寄送成功！")
+            from core.email_service import send_daily_report
+            logger.info("準備寄送分析報告...")
+            csv_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "market_sentinel_export.csv")
+            html_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "data", "dashboard.html")
+            send_daily_report(csv_path=csv_path, html_path=html_path)
 
 def _auto_export_csv(db: Session):
     """將最新的資料匯出至 data/market_sentinel_export.csv"""
@@ -546,16 +593,14 @@ def _auto_export_csv(db: Session):
         writer = csv.writer(f, delimiter=',', quoting=csv.QUOTE_MINIMAL)
         writer.writerow([
             "股票名稱", "新聞標題", "新聞摘要",
-            "Positive", "Neutral", "Negative",
-            "Sentiment", "Impact Score", "Surprise Score",
-            "Time Horizon", "Classification", "Confidence"
+            "Sentiment", "Positive", "Neutral", "Negative",
+            "Time Horizon", "Classification", "AI 分析筆記"
         ])
         for imp, event, comp in results:
             writer.writerow([
                 comp.company_name, event.event_title, event.event_summary,
-                imp.positive_score, imp.neutral_score, imp.negative_score,
-                imp.market_direction, imp.impact_score, imp.surprise_score,
-                imp.time_horizon, imp.classification, imp.confidence
+                imp.sentiment_label, imp.positive_score, imp.neutral_score, imp.negative_score,
+                imp.time_horizon, imp.classification, imp.analysis_notes
             ])
 def _auto_export_html(db: Session):
     """將最新的資料匯出至 data/dashboard.html"""
@@ -602,21 +647,29 @@ def _auto_export_html(db: Session):
                 <tr>
                     <th>相關公司</th>
                     <th>事件標題</th>
-                    <th>市場方向</th>
-                    <th>Impact Score</th>
+                    <th>情緒標籤</th>
+                    <th>情緒機率 (正/中/負)</th>
+                    <th>時間範圍</th>
+                    <th>分類</th>
                     <th>AI 分析筆記</th>
                 </tr>
             </thead>
             <tbody>
 """
     for imp, event, comp in results:
-        direction_class = "bullish" if imp.market_direction == "Bullish" else ("bearish" if imp.market_direction == "Bearish" else "neutral")
+        label = imp.sentiment_label or "Neutral"
+        direction_class = "bullish" if label == "Positive" else ("bearish" if label == "Negative" else "neutral")
+        pos = imp.positive_score if imp.positive_score is not None else 0.0
+        neu = imp.neutral_score if imp.neutral_score is not None else 0.0
+        neg = imp.negative_score if imp.negative_score is not None else 0.0
         html_content += f"""
                 <tr>
                     <td>{comp.company_name}</td>
                     <td>{event.event_title}</td>
-                    <td><span class="badge {direction_class}">{imp.market_direction}</span></td>
-                    <td>{imp.impact_score}</td>
+                    <td><span class="badge {direction_class}">{label}</span></td>
+                    <td>{pos:.2f} / {neu:.2f} / {neg:.2f}</td>
+                    <td>{imp.time_horizon}</td>
+                    <td>{imp.classification}</td>
                     <td>{imp.analysis_notes}</td>
                 </tr>
 """

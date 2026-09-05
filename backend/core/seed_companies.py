@@ -45,9 +45,27 @@ def load_seed_companies(generate_embeddings: bool = True):
             ).first()
 
             if existing:
-                logger.info(f"公司已存在，跳過: {comp['company_name']}")
-                skipped += 1
-                continue
+                if existing.embedding:
+                    logger.info(f"公司已存在且有 embedding，跳過: {comp['company_name']}")
+                    skipped += 1
+                    continue
+                else:
+                    # 公司存在但缺少 embedding，補上
+                    logger.info(f"公司已存在但缺少 embedding，重新生成: {comp['company_name']}")
+                    if generate_embeddings:
+                        try:
+                            embed_text = (
+                                f"{comp['company_name']} ({comp['industry']})\n"
+                                f"{comp['business_description']}\n"
+                                f"相關領域：{', '.join(comp['supply_chain_tags'])}"
+                            )
+                            embedding = get_embedding(embed_text)
+                            existing.embedding = embedding_to_json(embedding)
+                            logger.info(f"已補生成 embedding: {comp['company_name']}")
+                        except Exception as e:
+                            logger.warning(f"補生成 embedding 失敗 ({comp['company_name']}): {e}")
+                    skipped += 1
+                    continue
 
             # 生成 embedding
             embedding_json = None

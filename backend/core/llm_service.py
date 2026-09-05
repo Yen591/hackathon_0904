@@ -73,26 +73,40 @@ def _call_openai(prompt: str, system_prompt: str) -> str:
 
 
 def _call_gemini(prompt: str, system_prompt: str) -> str:
+    import time
+    import logging
     from google import genai
     from google.genai import types
-    
+
+    logger = logging.getLogger("core.llm_service")
+
     api_key = os.getenv("GEMINI_API_KEY")
     model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
-    
+
     if not api_key:
         raise ValueError("GEMINI_API_KEY 未設定，請檢查 .env 檔案")
-    
+
     client = genai.Client(api_key=api_key)
-    
+
     config = types.GenerateContentConfig(temperature=0.3)
     if system_prompt:
         config.system_instruction = system_prompt
 
-    response = client.models.generate_content(
-        model=model_name,
-        contents=prompt,
-        config=config,
-    )
-    
-    return response.text
+    max_retries = 3
+    for attempt in range(max_retries):
+        try:
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt,
+                config=config,
+            )
+            return response.text
+        except Exception as e:
+            error_msg = str(e)
+            if attempt < max_retries - 1 and ("EOF" in error_msg or "stream" in error_msg or "429" in error_msg or "503" in error_msg):
+                wait_time = (attempt + 1) * 5  # 5s, 10s, 15s
+                logger.warning(f"Gemini API 呼叫失敗 (第 {attempt+1} 次): {error_msg}，{wait_time} 秒後重試...")
+                time.sleep(wait_time)
+            else:
+                raise
 

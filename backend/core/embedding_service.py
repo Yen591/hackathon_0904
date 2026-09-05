@@ -67,7 +67,7 @@ def _embed_gemini(text: str) -> list[float]:
 
     client = genai.Client(api_key=api_key)
     result = client.models.embed_content(
-        model="gemini-embedding-1",
+        model="gemini-embedding-001",
         contents=text,
         config=types.EmbedContentConfig(
             task_type="SEMANTIC_SIMILARITY",

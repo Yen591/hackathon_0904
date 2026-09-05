@@ -34,9 +34,9 @@ def get_events(limit: int = 50, db: Session = Depends(get_db)):
     
     result = []
     for e in events:
-        # 計算該事件的最高 impact score 作為事件重要性參考
+        # 計算該事件的最高 impact score 作為事件重要性參考 (相容舊資料)
         impacts = db.query(ImpactAnalysis).filter(ImpactAnalysis.event_id == e.event_id).all()
-        max_impact = max([imp.impact_score for imp in impacts]) if impacts else 0
+        max_impact = max([imp.impact_score for imp in impacts if imp.impact_score is not None], default=0)
         
         # 取得關聯的原始新聞連結
         source_links = []
@@ -76,7 +76,7 @@ def get_event_impacts(event_id: str, db: Session = Depends(get_db)):
         db.query(ImpactAnalysis, Company)
         .join(Company, ImpactAnalysis.company_id == Company.company_id)
         .filter(ImpactAnalysis.event_id == event_id)
-        .order_by(ImpactAnalysis.impact_score.desc())
+        .order_by(ImpactAnalysis.id.desc())
         .all()
     )
     
@@ -85,21 +85,23 @@ def get_event_impacts(event_id: str, db: Session = Depends(get_db)):
         
     result = []
     for imp, comp in impacts:
+        label = imp.sentiment_label or "Neutral"
+        direction = imp.market_direction or ("Bullish" if label == "Positive" else ("Bearish" if label == "Negative" else "Neutral"))
         result.append({
             "company_id": comp.company_id,
             "company_name": comp.company_name,
             "ticker": comp.ticker,
-            "sentiment_label": imp.sentiment_label,
-            "positive_score": imp.positive_score,
-            "neutral_score": imp.neutral_score,
-            "negative_score": imp.negative_score,
-            "market_direction": imp.market_direction,
-            "impact_score": imp.impact_score,
-            "surprise_score": imp.surprise_score,
-            "time_horizon": imp.time_horizon,
-            "classification": imp.classification,
-            "confidence": imp.confidence,
-            "analysis_notes": imp.analysis_notes
+            "sentiment_label": label,
+            "positive_score": imp.positive_score if imp.positive_score is not None else 0.0,
+            "neutral_score": imp.neutral_score if imp.neutral_score is not None else 0.0,
+            "negative_score": imp.negative_score if imp.negative_score is not None else 0.0,
+            "market_direction": direction,
+            "impact_score": imp.impact_score or 0.0,
+            "surprise_score": imp.surprise_score or 0.0,
+            "time_horizon": imp.time_horizon or "",
+            "classification": imp.classification or "",
+            "confidence": imp.confidence or 1.0,
+            "analysis_notes": imp.analysis_notes or ""
         })
         
     return result
@@ -116,7 +118,7 @@ def get_companies(db: Session = Depends(get_db)):
 def export_powerbi(db: Session = Depends(get_db)):
     """
     一鍵匯出供 Power BI 使用的扁平化 CSV 資料
-    包含：事件名稱、公司名稱、代號、情緒、方向、影響分數、分析說明等
+    包含：事件名稱、公司名稱、情緒標籤、情緒機率、時效、分類、AI 分析筆記
     """
     results = (
         db.query(ImpactAnalysis, Event, Company)
@@ -132,9 +134,8 @@ def export_powerbi(db: Session = Depends(get_db)):
     # 寫入 CSV 標頭
     writer.writerow([
         "股票名稱", "新聞標題", "新聞摘要",
-        "Positive", "Neutral", "Negative",
-        "Sentiment", "Impact Score", "Surprise Score",
-        "Time Horizon", "Classification", "Confidence"
+        "Sentiment", "Positive", "Neutral", "Negative",
+        "Time Horizon", "Classification", "AI 分析筆記"
     ])
     
     # 寫入資料
@@ -143,15 +144,13 @@ def export_powerbi(db: Session = Depends(get_db)):
             comp.company_name,
             event.event_title,
             event.event_summary,
+            imp.sentiment_label,
             imp.positive_score,
             imp.neutral_score,
             imp.negative_score,
-            imp.market_direction,
-            imp.impact_score,
-            imp.surprise_score,
             imp.time_horizon,
             imp.classification,
-            imp.confidence
+            imp.analysis_notes
         ])
         
     csv_content = output.getvalue()
@@ -188,16 +187,23 @@ def get_company_impacts(company_id: str, db: Session = Depends(get_db)):
     
     result = []
     for imp, evt in impacts:
+        label = imp.sentiment_label or "Neutral"
+        direction = imp.market_direction or ("Bullish" if label == "Positive" else ("Bearish" if label == "Negative" else "Neutral"))
         result.append({
             "event_id": evt.event_id,
             "event_title": evt.event_title,
             "first_reported_at": evt.first_reported_at,
-            "sentiment_label": imp.sentiment_label,
-            "market_direction": imp.market_direction,
-            "impact_score": imp.impact_score,
-            "surprise_score": imp.surprise_score,
-            "classification": imp.classification,
-            "analysis_notes": imp.analysis_notes
+            "sentiment_label": label,
+            "positive_score": imp.positive_score if imp.positive_score is not None else 0.0,
+            "neutral_score": imp.neutral_score if imp.neutral_score is not None else 0.0,
+            "negative_score": imp.negative_score if imp.negative_score is not None else 0.0,
+            "market_direction": direction,
+            "impact_score": imp.impact_score or 0.0,
+            "surprise_score": imp.surprise_score or 0.0,
+            "time_horizon": imp.time_horizon or "",
+            "classification": imp.classification or "",
+            "confidence": imp.confidence or 1.0,
+            "analysis_notes": imp.analysis_notes or ""
         })
         
     return result
@@ -218,7 +224,7 @@ def generate_daily_report(db: Session = Depends(get_db)):
     event_summaries = []
     for e in events:
         impacts = db.query(ImpactAnalysis, Company).join(Company).filter(ImpactAnalysis.event_id == e.event_id).all()
-        impact_strs = [f"{comp.company_name}({imp.market_direction}, 分數:{imp.impact_score})" for imp, comp in impacts]
+        impact_strs = [f"{comp.company_name}({imp.sentiment_label})" for imp, comp in impacts]
         event_summaries.append(f"事件: {e.event_title}\n摘要: {e.event_summary}\n受影響公司: {', '.join(impact_strs)}")
         
     context_str = "\n\n".join(event_summaries)

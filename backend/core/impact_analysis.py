@@ -18,24 +18,13 @@ IMPACT_SYSTEM_PROMPT = """你是一位資深金融分析師，負責分析新聞
 3. **neutral_score** (0-1)：中性情緒的機率分數
 4. **negative_score** (0-1)：負面情緒的機率分數
    - 以上三者之和必須等於 1.0
-5. **market_direction** (Bullish / Bearish / Neutral)：
-   - 注意：不一定等同 sentiment（例如「利空出盡」sentiment 偏負但 direction 可能偏多）
-6. **impact_score** (0-100)：
-   - >80：可能顯著影響股價
-   - 50-80：中度影響
-   - <30：影響輕微
-7. **surprise_score** (0-100)：
-   - 此消息是否超乎市場預期？
-   - 高分 = 出乎意料（如突發重大訂單、意外虧損）
-   - 低分 = 市場已普遍預期（如例行法說會符合預期）
-8. **time_horizon** (Short-term / Long-term)：
+5. **time_horizon** (Short-term / Long-term)：
    - Short-term：影響在數小時至數週反映
    - Long-term：影響在數月至數年（結構性改變）
-9. **classification** (Signal / Noise)：
+6. **classification** (Signal / Noise)：
    - Signal：具備實質分析價值，可能影響投資判斷
    - Noise：市場雜訊、重複性消息、影響輕微
-10. **confidence** (0-1)：你對這次判斷的信心程度
-11. **analysis_notes**：簡短的分析說明（2-3句話）
+7. **analysis_notes**：簡短的分析說明（2-3句話）
 
 ## 輸出格式
 嚴格以 JSON 格式回覆：
@@ -48,12 +37,8 @@ IMPACT_SYSTEM_PROMPT = """你是一位資深金融分析師，負責分析新聞
       "positive_score": 0.0-1.0,
       "neutral_score": 0.0-1.0,
       "negative_score": 0.0-1.0,
-      "market_direction": "Bullish/Bearish/Neutral",
-      "impact_score": 0-100,
-      "surprise_score": 0-100,
       "time_horizon": "Short-term/Long-term",
       "classification": "Signal/Noise",
-      "confidence": 0.0-1.0,
       "analysis_notes": "分析說明"
     }
   ]

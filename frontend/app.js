@@ -158,29 +158,26 @@ function renderImpactDetails(eventData, impacts) {
         html += `<p style="color: var(--text-muted)">無資料。</p>`;
     } else {
         html += impacts.map(imp => {
-            const dirClass = imp.market_direction.toLowerCase();
-            const directionIcon = {'Bullish': '<i class="bx bx-trending-up"></i>', 'Bearish': '<i class="bx bx-trending-down"></i>', 'Neutral': '<i class="bx bx-minus"></i>'}[imp.market_direction] || '';
+            const dir = imp.market_direction || imp.sentiment_label || 'Neutral';
+            const dirClass = dir.toLowerCase();
+            const directionIcon = {'Bullish': '<i class="bx bx-trending-up"></i>', 'Bearish': '<i class="bx bx-trending-down"></i>', 'Neutral': '<i class="bx bx-minus"></i>', 'Positive': '<i class="bx bx-trending-up"></i>', 'Negative': '<i class="bx bx-trending-down"></i>'}[dir] || '';
 
             return `
-                <div class="impact-card" data-direction="${imp.market_direction}">
+                <div class="impact-card" data-direction="${dir}">
                     <div class="company-info">
                         <span class="ticker">${imp.ticker}</span>
                         <span class="company-name">${imp.company_name}</span>
                     </div>
                     <div class="analysis-details">
                         <div class="scores-row">
-                            <span class="score-pill bullish">Positive: ${imp.positive_score}</span>
-                            <span class="score-pill neutral">Neutral: ${imp.neutral_score}</span>
-                            <span class="score-pill bearish">Negative: ${imp.negative_score}</span>
+                            <span class="score-pill ${dirClass}">${directionIcon} ${imp.sentiment_label || dir}</span>
+                            <span class="score-pill bullish">Pos: ${Number(imp.positive_score).toFixed(2)}</span>
+                            <span class="score-pill neutral">Neu: ${Number(imp.neutral_score).toFixed(2)}</span>
+                            <span class="score-pill bearish">Neg: ${Number(imp.negative_score).toFixed(2)}</span>
+                            <span class="score-pill" style="opacity: 0.85"><i class='bx bx-time-five'></i> ${imp.time_horizon || 'Short-term'}</span>
+                            ${imp.classification === 'Signal' ? `<span class="score-pill signal"><i class='bx bx-radar'></i> Signal</span>` : (imp.classification ? `<span class="score-pill">${imp.classification}</span>` : '')}
                         </div>
-                        <div class="scores-row">
-                            <span class="score-pill ${dirClass}">${directionIcon} ${imp.market_direction}</span>
-                            <span class="score-pill">Impact: ${imp.impact_score}</span>
-                            <span class="score-pill">Surprise: ${imp.surprise_score}</span>
-                            <span class="score-pill" style="opacity: 0.7">${imp.time_horizon}</span>
-                            ${imp.classification === 'Signal' ? `<span class="score-pill signal"><i class='bx bx-radar'></i> Signal</span>` : ''}
-                        </div>
-                        <div class="analysis-text">${imp.analysis_notes}</div>
+                        <div class="analysis-text">${imp.analysis_notes || '尚無分析筆記'}</div>
                     </div>
                 </div>
             `;
@@ -257,23 +254,23 @@ function renderCompanyImpacts(companyName, impacts) {
 
     html += impacts.map(imp => {
         const timeStr = new Date(imp.first_reported_at).toLocaleString('zh-TW', { month: 'short', day: 'numeric' });
-        const dirClass = imp.market_direction.toLowerCase();
-        const directionIcon = {'Bullish': '<i class="bx bx-trending-up"></i>', 'Bearish': '<i class="bx bx-trending-down"></i>', 'Neutral': '<i class="bx bx-minus"></i>'}[imp.market_direction] || '';
+        const dir = imp.market_direction || imp.sentiment_label || 'Neutral';
+        const dirClass = dir.toLowerCase();
+        const directionIcon = {'Bullish': '<i class="bx bx-trending-up"></i>', 'Bearish': '<i class="bx bx-trending-down"></i>', 'Neutral': '<i class="bx bx-minus"></i>', 'Positive': '<i class="bx bx-trending-up"></i>', 'Negative': '<i class="bx bx-trending-down"></i>'}[dir] || '';
 
         return `
-            <div class="impact-card" data-direction="${imp.market_direction}">
+            <div class="impact-card" data-direction="${dir}">
                 <div class="company-info" style="width: 140px;">
                     <span class="event-time" style="margin-bottom:0;"><i class='bx bx-time'></i> ${timeStr}</span>
-                    <span class="score-pill ${dirClass}" style="margin-top:8px; display:inline-block; width:fit-content;">${directionIcon} ${imp.market_direction}</span>
+                    <span class="score-pill ${dirClass}" style="margin-top:8px; display:inline-block; width:fit-content;">${directionIcon} ${imp.sentiment_label || dir}</span>
                 </div>
                 <div class="analysis-details">
                     <div style="font-weight:600; margin-bottom:8px; color:white;">${imp.event_title}</div>
                     <div class="scores-row">
-                        <span class="score-pill">Impact: ${imp.impact_score}</span>
-                        <span class="score-pill">Surprise: ${imp.surprise_score}</span>
-                        ${imp.classification === 'Signal' ? `<span class="score-pill signal"><i class='bx bx-radar'></i> Signal</span>` : ''}
+                        <span class="score-pill" style="opacity: 0.85"><i class='bx bx-time-five'></i> ${imp.time_horizon || 'Short-term'}</span>
+                        ${imp.classification === 'Signal' ? `<span class="score-pill signal"><i class='bx bx-radar'></i> Signal</span>` : (imp.classification ? `<span class="score-pill">${imp.classification}</span>` : '')}
                     </div>
-                    <div class="analysis-text" style="margin-top:8px;">${imp.analysis_notes}</div>
+                    <div class="analysis-text" style="margin-top:8px;">${imp.analysis_notes || '尚無分析筆記'}</div>
                 </div>
             </div>
         `;
