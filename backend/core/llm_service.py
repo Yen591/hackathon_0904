@@ -48,7 +48,7 @@ def get_llm_json_response(prompt: str, system_prompt: str = "", provider: str = 
 
 
 def _call_openai(prompt: str, system_prompt: str) -> str:
-    from openai import OpenAI
+    from openai import OpenAI, BadRequestError
     
     api_key = os.getenv("OPENAI_API_KEY")
     model = os.getenv("OPENAI_MODEL", "gpt-4o")
@@ -63,11 +63,20 @@ def _call_openai(prompt: str, system_prompt: str) -> str:
         messages.append({"role": "system", "content": system_prompt})
     messages.append({"role": "user", "content": prompt})
     
-    response = client.chat.completions.create(
-        model=model,
-        messages=messages,
-        temperature=0.3,
-    )
+    try:
+        response = client.chat.completions.create(
+            model=model,
+            messages=messages,
+            temperature=0.3,
+        )
+    except BadRequestError as e:
+        if "temperature" in str(e).lower():
+            response = client.chat.completions.create(
+                model=model,
+                messages=messages,
+            )
+        else:
+            raise
     
     return response.choices[0].message.content
 
