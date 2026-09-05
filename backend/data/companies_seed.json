@@ -4,95 +4,27 @@
     "company_name": "台積電",
     "ticker": "2330.TW",
     "industry": "半導體",
-    "business_description": "全球最大的晶圓代工廠，提供先進製程技術（3nm、5nm、7nm），為蘋果、NVIDIA、AMD、高通等大廠代工晶片。在先進封裝技術（CoWoS、InFO）領域居全球領先地位，是AI晶片供應鏈核心企業。",
-    "supply_chain_tags": ["晶圓代工", "先進封裝", "CoWoS", "AI晶片", "半導體製程", "3nm", "5nm"]
-  },
-  {
-    "company_id": "HON_HAI",
-    "company_name": "鴻海",
-    "ticker": "2317.TW",
-    "industry": "電子代工",
-    "business_description": "全球最大的電子產品代工廠（EMS），主要客戶為蘋果。近年積極布局電動車（MIH平台）、半導體、數位健康三大新事業。也是AI伺服器的重要組裝廠商。",
-    "supply_chain_tags": ["電子代工", "iPhone組裝", "AI伺服器", "電動車", "MIH平台", "雲端伺服器"]
-  },
-  {
-    "company_id": "MEDIATEK",
-    "company_name": "聯發科",
-    "ticker": "2454.TW",
-    "industry": "IC設計",
-    "business_description": "全球前五大IC設計公司，主要產品為手機晶片（天璣系列）、智慧電視晶片、WiFi晶片。在5G手機晶片市場與高通競爭，近年布局車用晶片與AI邊緣運算。",
-    "supply_chain_tags": ["IC設計", "手機晶片", "5G", "天璣", "WiFi晶片", "車用晶片", "AI邊緣運算"]
-  },
-  {
-    "company_id": "DELTA",
-    "company_name": "台達電",
-    "ticker": "2308.TW",
-    "industry": "電子零組件",
-    "business_description": "全球最大的交換式電源供應器廠商，產品涵蓋電源、散熱、自動化、資料中心基礎設施。是AI伺服器電源供應鏈的關鍵供應商，也布局電動車充電樁市場。",
-    "supply_chain_tags": ["電源供應器", "AI伺服器電源", "資料中心", "散熱模組", "電動車充電", "自動化"]
-  },
-  {
-    "company_id": "LARGAN",
-    "company_name": "大立光",
-    "ticker": "3008.TW",
-    "industry": "光學元件",
-    "business_description": "全球最大的手機鏡頭模組供應商，技術領先於玉晶光等競爭者。主要客戶為蘋果、三星等手機品牌廠。營收與智慧型手機出貨量高度連動。",
-    "supply_chain_tags": ["手機鏡頭", "光學元件", "iPhone鏡頭", "鏡頭模組"]
-  },
-  {
-    "company_id": "UMC",
-    "company_name": "聯電",
-    "ticker": "2303.TW",
-    "industry": "半導體",
-    "business_description": "全球第三大晶圓代工廠，專注成熟製程（28nm以上），主要應用於車用晶片、IoT、工業控制等領域。與台積電同為台灣半導體產業核心企業。",
-    "supply_chain_tags": ["晶圓代工", "成熟製程", "28nm", "車用晶片", "IoT晶片"]
-  },
-  {
-    "company_id": "ASE",
-    "company_name": "日月光投控",
-    "ticker": "3711.TW",
-    "industry": "半導體封測",
-    "business_description": "全球最大的半導體封裝測試廠，提供各類封裝服務包含先進封裝。與台積電在先進封裝領域有競合關係。AI晶片的封裝需求增加對其營收有直接正面影響。",
-    "supply_chain_tags": ["半導體封測", "先進封裝", "IC封裝", "IC測試", "AI晶片封裝"]
-  },
-  {
-    "company_id": "QUANTA",
-    "company_name": "廣達",
-    "ticker": "2382.TW",
-    "industry": "電腦及週邊",
-    "business_description": "全球最大的筆記型電腦代工廠，近年成為NVIDIA GB200/GB300 AI伺服器的核心代工夥伴。AI伺服器業務已成為公司主要成長動能。",
-    "supply_chain_tags": ["筆電代工", "AI伺服器", "GB200", "雲端伺服器", "NVIDIA代工"]
-  },
-  {
-    "company_id": "NOVATEK",
-    "company_name": "聯詠",
-    "ticker": "3034.TW",
-    "industry": "IC設計",
-    "business_description": "台灣第二大IC設計公司，主要產品為面板驅動IC（DDIC）與系統單晶片（SoC），客戶涵蓋三星、LG等面板廠。營收與面板產業景氣高度連動。",
-    "supply_chain_tags": ["面板驅動IC", "DDIC", "SoC", "面板產業", "顯示晶片"]
-  },
-  {
-    "company_id": "WISTRON",
-    "company_name": "緯創",
-    "ticker": "3231.TW",
-    "industry": "電腦及週邊",
-    "business_description": "電腦及伺服器代工廠，近年積極轉型AI伺服器製造。為多家雲端服務商代工伺服器，是台灣AI伺服器供應鏈的重要參與者。",
-    "supply_chain_tags": ["伺服器代工", "AI伺服器", "筆電代工", "雲端伺服器"]
-  },
-  {
-    "company_id": "CATHAY_FHC",
-    "company_name": "國泰金控",
-    "ticker": "2882.TW",
-    "industry": "金融",
-    "business_description": "台灣最大的金融控股公司之一，旗下有國泰人壽（台灣最大壽險公司）、國泰世華銀行、國泰證券。營運受利率政策、股債市表現、壽險避險成本等影響。",
-    "supply_chain_tags": ["壽險", "銀行", "證券", "金融控股", "利率", "避險"]
-  },
-  {
-    "company_id": "FORMOSA_PLASTICS",
-    "company_name": "台塑",
-    "ticker": "1301.TW",
-    "industry": "石化",
-    "business_description": "台灣最大的石化集團成員，主要產品為塑膠原料（PVC、PE、PP等）。營收與原油價格、石化景氣循環高度連動。旗下台塑集團涵蓋石化上下游完整產業鏈。",
-    "supply_chain_tags": ["石化", "塑膠原料", "PVC", "PE", "PP", "原油", "石化景氣"]
+    "business_description": "台灣積體電路製造股份有限公司（TSMC，台股代碼：2330，美股NYSE代碼：TSM，創辦人張忠謀）。全球最大的晶圓代工半導體製造廠，提供先進製程技術（3nm、5nm、7nm、FinFET電晶體技術）與先進封裝（CoWoS、InFO），為蘋果、NVIDIA、AMD、高通等大廠代工晶片。主要產品與技術涵蓋晶圓、晶圓廠製造，應用領域包含高效能運算（HPC）、智慧型手機、物聯網（IoT）、車用電子與消費性電子產品。營運與製造據點橫跨北美、歐洲、日本（JASM熊本廠）、中國大陸。",
+    "supply_chain_tags": [
+      "晶圓代工",
+      "晶片",
+      "半導體製程",
+      "製程技術",
+      "3nm",
+      "5nm",
+      "FinFET電晶體技術",
+      "先進封裝",
+      "CoWoS",
+      "AI晶片",
+      "高效能運算",
+      "智慧型手機",
+      "物聯網",
+      "車用電子",
+      "消費性電子產品",
+      "晶圓",
+      "晶圓廠",
+      "JASM",
+      "張忠謀"
+    ]
   }
 ]
