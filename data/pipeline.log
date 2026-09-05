@@ -1,0 +1,287 @@
+2026-09-05 10:46:39,816 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:46:39,817 [INFO] MarketSentinel — 步驟 0：初始化資料庫
+2026-09-05 10:46:40,117 [INFO] MarketSentinel — 資料表建立完成
+2026-09-05 10:46:40,148 [WARNING] core.seed_companies — 生成 embedding 失敗 (台積電): No module named 'google.ai.generativelanguage_v1beta'
+2026-09-05 10:46:40,152 [WARNING] core.seed_companies — 生成 embedding 失敗 (鴻海): No module named 'google.ai.generativelanguage_v1beta'
+2026-09-05 10:46:40,155 [WARNING] core.seed_companies — 生成 embedding 失敗 (聯發科): No module named 'google.ai.generativelanguage_v1beta'
+2026-09-05 10:46:40,158 [WARNING] core.seed_companies — 生成 embedding 失敗 (台達電): No module named 'google.ai.generativelanguage_v1beta'
+2026-09-05 10:46:40,163 [WARNING] core.seed_companies — 生成 embedding 失敗 (大立光): No module named 'google.ai.generativelanguage_v1beta'
+2026-09-05 10:46:40,165 [WARNING] core.seed_companies — 生成 embedding 失敗 (聯電): No module named 'google.ai.generativelanguage_v1beta'
+2026-09-05 10:46:40,169 [WARNING] core.seed_companies — 生成 embedding 失敗 (日月光投控): No module named 'google.ai.generativelanguage_v1beta'
+2026-09-05 10:46:40,172 [WARNING] core.seed_companies — 生成 embedding 失敗 (廣達): No module named 'google.ai.generativelanguage_v1beta'
+2026-09-05 10:46:40,175 [WARNING] core.seed_companies — 生成 embedding 失敗 (聯詠): No module named 'google.ai.generativelanguage_v1beta'
+2026-09-05 10:46:40,179 [WARNING] core.seed_companies — 生成 embedding 失敗 (緯創): No module named 'google.ai.generativelanguage_v1beta'
+2026-09-05 10:46:40,183 [WARNING] core.seed_companies — 生成 embedding 失敗 (國泰金控): No module named 'google.ai.generativelanguage_v1beta'
+2026-09-05 10:46:40,187 [WARNING] core.seed_companies — 生成 embedding 失敗 (台塑): No module named 'google.ai.generativelanguage_v1beta'
+2026-09-05 10:46:40,209 [INFO] core.seed_companies — 公司種子資料載入完成：新增 12 家，跳過 0 家
+2026-09-05 10:46:40,209 [INFO] MarketSentinel — 公司種子資料載入完成：12 家
+2026-09-05 10:46:40,209 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:48:58,784 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:48:58,785 [INFO] MarketSentinel — 步驟 0：初始化資料庫
+2026-09-05 10:48:58,787 [INFO] MarketSentinel — 資料表建立完成
+2026-09-05 10:48:58,796 [INFO] core.seed_companies — 公司已存在，跳過: 台積電
+2026-09-05 10:48:58,797 [INFO] core.seed_companies — 公司已存在，跳過: 鴻海
+2026-09-05 10:48:58,797 [INFO] core.seed_companies — 公司已存在，跳過: 聯發科
+2026-09-05 10:48:58,798 [INFO] core.seed_companies — 公司已存在，跳過: 台達電
+2026-09-05 10:48:58,799 [INFO] core.seed_companies — 公司已存在，跳過: 大立光
+2026-09-05 10:48:58,799 [INFO] core.seed_companies — 公司已存在，跳過: 聯電
+2026-09-05 10:48:58,799 [INFO] core.seed_companies — 公司已存在，跳過: 日月光投控
+2026-09-05 10:48:58,800 [INFO] core.seed_companies — 公司已存在，跳過: 廣達
+2026-09-05 10:48:58,800 [INFO] core.seed_companies — 公司已存在，跳過: 聯詠
+2026-09-05 10:48:58,800 [INFO] core.seed_companies — 公司已存在，跳過: 緯創
+2026-09-05 10:48:58,801 [INFO] core.seed_companies — 公司已存在，跳過: 國泰金控
+2026-09-05 10:48:58,801 [INFO] core.seed_companies — 公司已存在，跳過: 台塑
+2026-09-05 10:48:58,801 [INFO] core.seed_companies — 公司種子資料載入完成：新增 0 家，跳過 12 家
+2026-09-05 10:48:58,801 [INFO] MarketSentinel — 公司種子資料載入完成：0 家
+2026-09-05 10:48:58,801 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:49:45,345 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:49:45,345 [INFO] MarketSentinel — 步驟 0：初始化資料庫
+2026-09-05 10:49:45,651 [INFO] MarketSentinel — 資料表建立完成
+2026-09-05 10:49:48,199 [WARNING] core.seed_companies — 生成 embedding 失敗 (台積電): 404 models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+2026-09-05 10:49:49,318 [WARNING] core.seed_companies — 生成 embedding 失敗 (鴻海): 404 models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+2026-09-05 10:49:51,173 [WARNING] core.seed_companies — 生成 embedding 失敗 (聯發科): 404 models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+2026-09-05 10:49:52,556 [WARNING] core.seed_companies — 生成 embedding 失敗 (台達電): 404 models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+2026-09-05 10:49:52,960 [WARNING] core.seed_companies — 生成 embedding 失敗 (大立光): 404 models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+2026-09-05 10:49:54,873 [WARNING] core.seed_companies — 生成 embedding 失敗 (聯電): 404 models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+2026-09-05 10:49:56,994 [WARNING] core.seed_companies — 生成 embedding 失敗 (日月光投控): 404 models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+2026-09-05 10:49:58,533 [WARNING] core.seed_companies — 生成 embedding 失敗 (廣達): 404 models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+2026-09-05 10:50:00,405 [WARNING] core.seed_companies — 生成 embedding 失敗 (聯詠): 404 models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+2026-09-05 10:50:01,016 [WARNING] core.seed_companies — 生成 embedding 失敗 (緯創): 404 models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+2026-09-05 10:50:02,642 [WARNING] core.seed_companies — 生成 embedding 失敗 (國泰金控): 404 models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+2026-09-05 10:50:04,705 [WARNING] core.seed_companies — 生成 embedding 失敗 (台塑): 404 models/text-embedding-004 is not found for API version v1beta, or is not supported for embedContent. Call ModelService.ListModels to see the list of available models and their supported methods.
+2026-09-05 10:50:04,743 [INFO] core.seed_companies — 公司種子資料載入完成：新增 12 家，跳過 0 家
+2026-09-05 10:50:04,743 [INFO] MarketSentinel — 公司種子資料載入完成：12 家
+2026-09-05 10:50:04,743 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:51:32,502 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:51:32,503 [INFO] MarketSentinel — 步驟 0：初始化資料庫
+2026-09-05 10:51:32,828 [INFO] MarketSentinel — 資料表建立完成
+2026-09-05 10:51:35,317 [INFO] core.seed_companies — 已生成 embedding: 台積電
+2026-09-05 10:51:36,241 [INFO] core.seed_companies — 已生成 embedding: 鴻海
+2026-09-05 10:51:37,272 [INFO] core.seed_companies — 已生成 embedding: 聯發科
+2026-09-05 10:51:38,055 [INFO] core.seed_companies — 已生成 embedding: 台達電
+2026-09-05 10:51:39,187 [INFO] core.seed_companies — 已生成 embedding: 大立光
+2026-09-05 10:51:40,535 [INFO] core.seed_companies — 已生成 embedding: 聯電
+2026-09-05 10:51:41,869 [INFO] core.seed_companies — 已生成 embedding: 日月光投控
+2026-09-05 10:51:42,771 [INFO] core.seed_companies — 已生成 embedding: 廣達
+2026-09-05 10:51:43,551 [INFO] core.seed_companies — 已生成 embedding: 聯詠
+2026-09-05 10:51:44,374 [INFO] core.seed_companies — 已生成 embedding: 緯創
+2026-09-05 10:51:45,217 [INFO] core.seed_companies — 已生成 embedding: 國泰金控
+2026-09-05 10:51:46,332 [INFO] core.seed_companies — 已生成 embedding: 台塑
+2026-09-05 10:51:46,366 [INFO] core.seed_companies — 公司種子資料載入完成：新增 12 家，跳過 0 家
+2026-09-05 10:51:46,366 [INFO] MarketSentinel — 公司種子資料載入完成：12 家
+2026-09-05 10:51:46,366 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:57:47,360 [INFO] MarketSentinel — 🚀 Market Sentinel Pipeline 開始執行
+2026-09-05 10:57:47,363 [INFO] MarketSentinel — 開始時間: 2026-09-05 10:57:47
+2026-09-05 10:57:47,366 [INFO] MarketSentinel — 使用 Demo 測試新聞
+2026-09-05 10:57:47,396 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:57:47,396 [INFO] MarketSentinel — 步驟 2：新聞清理 / 去重
+2026-09-05 10:57:47,398 [INFO] core.cleaning — 清理完成：2 篇原始 → 2 篇有效新聞
+2026-09-05 10:57:47,425 [INFO] MarketSentinel — 清理新聞儲存完成：2 篇
+2026-09-05 10:57:47,425 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:57:47,425 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:57:47,425 [INFO] MarketSentinel — 步驟 3：AI 相關性判斷 + 步驟 4：金融影響分析
+2026-09-05 10:57:47,428 [INFO] MarketSentinel — 已載入 12 家公司資料
+2026-09-05 10:57:47,428 [INFO] MarketSentinel — 
+--- 分析第 1/2 篇: 全球 AI 伺服器需求增加，先進封裝產能吃緊... ---
+2026-09-05 10:57:49,904 [INFO] core.relevance_engine — Embedding 粗篩結果：8 家候選公司 — 日月光投控, 緯創, 廣達, 台積電, 台達電, 鴻海, 聯發科, 聯電
+2026-09-05 10:58:08,380 [INFO] core.relevance_engine — LLM 精判結果：6 家相關公司 (閾值=60)
+2026-09-05 10:58:32,054 [INFO] core.impact_analysis — 影響分析完成：6 筆結果
+2026-09-05 10:58:32,088 [INFO] MarketSentinel — 
+--- 分析第 2/2 篇: 國際油價大幅波動，石化業者面臨成本壓力... ---
+2026-09-05 10:58:36,345 [INFO] core.relevance_engine — Embedding 粗篩結果：8 家候選公司 — 台塑, 國泰金控, 日月光投控, 聯詠, 聯電, 台達電, 大立光, 緯創
+2026-09-05 10:58:48,664 [INFO] core.relevance_engine — LLM 精判結果：1 家相關公司 (閾值=60)
+2026-09-05 10:59:10,154 [INFO] core.impact_analysis — 影響分析完成：1 筆結果
+2026-09-05 10:59:10,196 [INFO] MarketSentinel — 
+分析完成：7 筆相關性結果，7 筆影響分析
+2026-09-05 10:59:10,196 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:59:10,196 [INFO] MarketSentinel — 
+============================================================
+2026-09-05 10:59:10,196 [INFO] MarketSentinel — 📊 分析結果摘要
+2026-09-05 10:59:10,196 [INFO] MarketSentinel — ============================================================
+2026-09-05 10:59:10,200 [INFO] MarketSentinel — 
+🔴 📈 [TSMC] 台積電
+  新聞：全球 AI 伺服器需求增加，先進封裝產能吃緊...
+  情緒: Positive | 方向: Bullish
+  Impact: 85.0 | Surprise: 35.0 | 信心: 0.95
+  時間範圍: Long-term | 分類: Signal
+  相關性: 95.0分 (direct) — 新聞提及 CoWoS 先進封裝產能嚴重吃緊及晶圓代工廠擴充產能，台積電為 CoWoS 技術獨家／主要提供者與 NVIDIA AI 晶片的核心代工廠。
+  分析: 新聞確認 CoWoS 先進封裝產能持續吃緊，凸顯台積電在高階 AI 晶片製造與封裝的技術獨占優勢與極高的訂單能見度。積極擴充產能將持續帶動長線營收成長，為具實質價值的分析訊號。
+2026-09-05 10:59:10,200 [INFO] MarketSentinel — 
+🔴 📈 [DELTA] 台達電
+  新聞：全球 AI 伺服器需求增加，先進封裝產能吃緊...
+  情緒: Positive | 方向: Bullish
+  Impact: 75.0 | Surprise: 30.0 | 信心: 0.9
+  時間範圍: Long-term | 分類: Signal
+  相關性: 85.0分 (direct) — 新聞直接指出電源供應器與散熱模組等關鍵零組件需求同步增長，台達電為全球 AI 伺服器電源與散熱解決方案龍頭。
+  分析: AI 伺服器對高功率電源與先進散熱模組需求大幅提升，台達電作為全球龍頭將顯著受惠於高毛利產品出貨比重增加。訂單能見度延伸至明年，提供明確的中長期營運支撐。
+2026-09-05 10:59:10,200 [INFO] MarketSentinel — 
+🔴 📈 [QUANTA] 廣達
+  新聞：全球 AI 伺服器需求增加，先進封裝產能吃緊...
+  情緒: Positive | 方向: Bullish
+  Impact: 75.0 | Surprise: 30.0 | 信心: 0.9
+  時間範圍: Long-term | 分類: Signal
+  相關性: 85.0分 (direct) — 新聞提及 AI 伺服器需求持續攀升且伺服器代工廠產能接近滿載，廣達為 NVIDIA AI 伺服器的核心代工夥伴。
+  分析: AI 伺服器代工需求強勁且產能利用率接近滿載，確保廣達未來的營收成長動能。雖然封裝產能吃緊可能微幅限制短期放量速度，但整體長線趨勢極為有利。
+2026-09-05 10:59:10,200 [INFO] MarketSentinel — 
+🔴 📈 [WISTRON] 緯創
+  新聞：全球 AI 伺服器需求增加，先進封裝產能吃緊...
+  情緒: Positive | 方向: Bullish
+  Impact: 75.0 | Surprise: 30.0 | 信心: 0.9
+  時間範圍: Long-term | 分類: Signal
+  相關性: 85.0分 (direct) — 新聞指出 AI 伺服器需求強勁帶動代工廠滿載，緯創為 NVIDIA GPU 基板及 AI 伺服器主要代工廠商。
+  分析: 緯創作為核心 GPU 基板供應商，直接吃緊的市場需求為其帶來極高訂單能見度。伺服器代工廠產能滿載佐證其獲利展望樂觀，屬於實質基本面利多。
+2026-09-05 10:59:10,200 [INFO] MarketSentinel — 
+🔴 📈 [ASE] 日月光投控
+  新聞：全球 AI 伺服器需求增加，先進封裝產能吃緊...
+  情緒: Positive | 方向: Bullish
+  Impact: 70.0 | Surprise: 40.0 | 信心: 0.85
+  時間範圍: Long-term | 分類: Signal
+  相關性: 80.0分 (direct) — 新聞聚焦於先進封裝產能吃緊與晶片封裝需求增加，日月光投控為全球半導體封測龍頭並積極布局先進封裝。
+  分析: 先進封裝產能嚴重吃緊促使晶圓代工廠加速將部分封測工序外包，日月光投控作為全球 OSAT 龍頭，預計將迎來外溢訂單與先進封裝業務的長線成長機會。
+2026-09-05 10:59:10,200 [INFO] MarketSentinel — 
+🔴 📈 [HON_HAI] 鴻海
+  新聞：全球 AI 伺服器需求增加，先進封裝產能吃緊...
+  情緒: Positive | 方向: Bullish
+  Impact: 70.0 | Surprise: 30.0 | 信心: 0.9
+  時間範圍: Long-term | 分類: Signal
+  相關性: 80.0分 (direct) — 新聞提及全球 AI 伺服器需求增加及代工廠產能利用率接近滿載，鴻海為主要 AI 伺服器組裝代工廠。
+  分析: 全球 AI 伺服器需求持續攀升，帶動鴻海伺服器組裝產能利用率逼近滿載。高毛利的 AI 伺服器出貨比重提升，有助於優化其整體產品組合與營利表現。
+2026-09-05 10:59:10,200 [INFO] MarketSentinel — 
+🔴 📉 [FORMOSA_PLASTICS] 台塑
+  新聞：國際油價大幅波動，石化業者面臨成本壓力...
+  情緒: Negative | 方向: Bearish
+  Impact: 65.0 | Surprise: 55.0 | 信心: 0.85
+  時間範圍: Short-term | 分類: Signal
+  相關性: 90.0分 (direct) — 新聞直接提及石化業者及 PVC、PE、PP 等塑膠原料成本壓力，與台塑的主營業務及產品線直接高度相關。
+  分析: 國際原油價格單週大漲逾 8%，將顯著推升台塑主營產品（PVC、PE、PP）的上游原料成本。在終端需求尚未全面復甦的情況下，若產品轉嫁能力有限，短期內利差恐遭壓縮，對獲利表現形成壓力。
+2026-09-05 10:59:10,201 [INFO] MarketSentinel — 
+✅ Pipeline 完成！耗時 82.8 秒
+2026-09-05 10:59:10,201 [INFO] MarketSentinel — 結束時間: 2026-09-05 10:59:10
+2026-09-05 11:05:26,230 [INFO] MarketSentinel — 🚀 Market Sentinel Pipeline 開始執行
+2026-09-05 11:05:26,230 [INFO] MarketSentinel — 開始時間: 2026-09-05 11:05:26
+2026-09-05 11:05:26,234 [INFO] MarketSentinel — 使用 Demo 測試新聞
+2026-09-05 11:05:26,239 [INFO] MarketSentinel — ============================================================
+2026-09-05 11:05:26,239 [INFO] MarketSentinel — 步驟 2：新聞清理 / 去重
+2026-09-05 11:05:26,240 [INFO] core.cleaning — 完全重複，跳過: 全球 AI 伺服器需求增加，先進封裝產能吃緊...
+2026-09-05 11:05:26,240 [INFO] core.cleaning — 完全重複，跳過: 國際油價大幅波動，石化業者面臨成本壓力...
+2026-09-05 11:05:26,241 [INFO] core.cleaning — 清理完成：2 篇原始 → 0 篇有效新聞
+2026-09-05 11:05:26,241 [INFO] MarketSentinel — 清理新聞儲存完成：0 篇
+2026-09-05 11:05:26,241 [INFO] MarketSentinel — ============================================================
+2026-09-05 11:05:26,241 [WARNING] MarketSentinel — 清理後沒有有效新聞，Pipeline 結束
+2026-09-05 11:06:39,819 [INFO] MarketSentinel — ============================================================
+2026-09-05 11:06:39,819 [INFO] MarketSentinel — 步驟 0：初始化資料庫
+2026-09-05 11:06:40,113 [INFO] MarketSentinel — 資料表建立完成
+2026-09-05 11:06:43,595 [INFO] core.seed_companies — 已生成 embedding: 台積電
+2026-09-05 11:06:45,730 [INFO] core.seed_companies — 已生成 embedding: 鴻海
+2026-09-05 11:06:47,660 [INFO] core.seed_companies — 已生成 embedding: 聯發科
+2026-09-05 11:06:48,852 [INFO] core.seed_companies — 已生成 embedding: 台達電
+2026-09-05 11:06:49,584 [INFO] core.seed_companies — 已生成 embedding: 大立光
+2026-09-05 11:06:50,576 [INFO] core.seed_companies — 已生成 embedding: 聯電
+2026-09-05 11:06:56,159 [INFO] core.seed_companies — 已生成 embedding: 日月光投控
+2026-09-05 11:07:05,244 [INFO] core.seed_companies — 已生成 embedding: 廣達
+2026-09-05 11:07:06,743 [INFO] core.seed_companies — 已生成 embedding: 聯詠
+2026-09-05 11:07:07,682 [INFO] core.seed_companies — 已生成 embedding: 緯創
+2026-09-05 11:07:11,152 [INFO] core.seed_companies — 已生成 embedding: 國泰金控
+2026-09-05 11:07:13,447 [INFO] core.seed_companies — 已生成 embedding: 台塑
+2026-09-05 11:07:13,489 [INFO] core.seed_companies — 公司種子資料載入完成：新增 12 家，跳過 0 家
+2026-09-05 11:07:13,489 [INFO] MarketSentinel — 公司種子資料載入完成：12 家
+2026-09-05 11:07:13,489 [INFO] MarketSentinel — ============================================================
+2026-09-05 11:08:37,636 [INFO] MarketSentinel — 🚀 Market Sentinel Pipeline 開始執行
+2026-09-05 11:08:37,637 [INFO] MarketSentinel — 開始時間: 2026-09-05 11:08:37
+2026-09-05 11:08:37,639 [INFO] MarketSentinel — 使用 Demo 測試新聞
+2026-09-05 11:08:37,674 [INFO] MarketSentinel — ============================================================
+2026-09-05 11:08:37,674 [INFO] MarketSentinel — 步驟 2：新聞清理 / 去重
+2026-09-05 11:08:37,677 [INFO] core.cleaning — 清理完成：2 篇原始 → 2 篇有效新聞
+2026-09-05 11:08:37,701 [INFO] MarketSentinel — 清理新聞儲存完成：2 篇
+2026-09-05 11:08:37,701 [INFO] MarketSentinel — ============================================================
+2026-09-05 11:08:37,701 [INFO] MarketSentinel — ============================================================
+2026-09-05 11:08:37,701 [INFO] MarketSentinel — 步驟 3：AI 相關性判斷 + 步驟 4：事件聚合與金融影響分析
+2026-09-05 11:08:37,707 [INFO] MarketSentinel — 已載入 12 家公司資料, 0 個既有事件
+2026-09-05 11:08:37,724 [INFO] MarketSentinel — 
+--- 分析第 1/2 篇: 全球 AI 伺服器需求增加，先進封裝產能吃緊... ---
+2026-09-05 11:08:39,537 [INFO] core.relevance_engine — Embedding 粗篩結果：8 家候選公司 — 日月光投控, 緯創, 廣達, 台積電, 台達電, 鴻海, 聯發科, 聯電
+2026-09-05 11:09:15,511 [INFO] core.relevance_engine — LLM 精判結果：6 家相關公司 (閾值=60)
+2026-09-05 11:09:15,590 [INFO] core.event_clustering — 建立新事件: 全球 AI 伺服器需求增加，先進封裝產能吃緊
+2026-09-05 11:12:11,008 [INFO] MarketSentinel — 成功建立新事件: AI伺服器需求爆發 先進封裝交期破半年
+2026-09-05 11:12:25,179 [INFO] core.impact_analysis — 影響分析完成：6 筆結果
+2026-09-05 11:12:25,235 [INFO] MarketSentinel — 
+--- 分析第 2/2 篇: 國際油價大幅波動，石化業者面臨成本壓力... ---
+2026-09-05 11:12:26,572 [INFO] core.relevance_engine — Embedding 粗篩結果：8 家候選公司 — 台塑, 國泰金控, 日月光投控, 聯詠, 聯電, 台達電, 大立光, 緯創
+2026-09-05 11:12:38,095 [INFO] core.relevance_engine — LLM 精判結果：2 家相關公司 (閾值=60)
+2026-09-05 11:12:38,145 [INFO] core.event_clustering — 建立新事件: 國際油價大幅波動，石化業者面臨成本壓力
+2026-09-05 11:12:48,492 [INFO] MarketSentinel — 成功建立新事件: 地緣緊張推升油價週漲逾8% 石化業成本承壓
+2026-09-05 11:13:06,953 [INFO] core.impact_analysis — 影響分析完成：2 筆結果
+2026-09-05 11:13:07,049 [INFO] MarketSentinel — 
+分析完成：8 筆相關性結果，8 筆影響分析
+2026-09-05 11:13:07,049 [INFO] MarketSentinel — ============================================================
+2026-09-05 11:13:07,049 [INFO] MarketSentinel — 
+============================================================
+2026-09-05 11:13:07,049 [INFO] MarketSentinel — 📊 分析結果摘要 (Event-based)
+2026-09-05 11:13:07,049 [INFO] MarketSentinel — ============================================================
+2026-09-05 11:13:07,054 [INFO] MarketSentinel — 
+🔴 📈 [2330.TW] 台積電
+  事件：AI伺服器需求爆發 先進封裝交期破半年
+  摘要：生成式 AI 熱潮帶動全球 AI 伺服器需求大增，輝達（NVIDIA）新一代 GPU 採用的 CoWoS 先進封裝產能嚴重吃緊，導致交期拉長至六個月以上。儘管晶圓代工廠全力擴產，短期仍難解供不應求現狀...
+  情緒: Positive | 方向: Bullish
+  Impact: 85.0 | Surprise: 40.0 | 信心: 0.95
+  時間範圍: Long-term | 分類: Signal
+  分析: CoWoS 先進封裝交期破半年凸顯台積電在 AI 晶片製造與封裝的獨占地位及定價能力。儘管產能吃緊短期限制出貨天花板，擴產計畫與延伸至明年的訂單將奠定中長期堅實的獲利基石。
+2026-09-05 11:13:07,054 [INFO] MarketSentinel — 
+🔴 📈 [2382.TW] 廣達
+  事件：AI伺服器需求爆發 先進封裝交期破半年
+  摘要：生成式 AI 熱潮帶動全球 AI 伺服器需求大增，輝達（NVIDIA）新一代 GPU 採用的 CoWoS 先進封裝產能嚴重吃緊，導致交期拉長至六個月以上。儘管晶圓代工廠全力擴產，短期仍難解供不應求現狀...
+  情緒: Positive | 方向: Bullish
+  Impact: 80.0 | Surprise: 35.0 | 信心: 0.9
+  時間範圍: Long-term | 分類: Signal
+  分析: 伺服器代工廠產能滿載且訂單能見度長達一年，進一步驗證廣達作為 NVIDIA 核心代工夥伴的強勁動能。雖然晶片交期拉長可能稍微影響短期營收認列步調，總體需求仍極為熱絡。
+2026-09-05 11:13:07,054 [INFO] MarketSentinel — 
+🔴 📈 [3231.TW] 緯創
+  事件：AI伺服器需求爆發 先進封裝交期破半年
+  摘要：生成式 AI 熱潮帶動全球 AI 伺服器需求大增，輝達（NVIDIA）新一代 GPU 採用的 CoWoS 先進封裝產能嚴重吃緊，導致交期拉長至六個月以上。儘管晶圓代工廠全力擴產，短期仍難解供不應求現狀...
+  情緒: Positive | 方向: Bullish
+  Impact: 80.0 | Surprise: 35.0 | 信心: 0.9
+  時間範圍: Long-term | 分類: Signal
+  分析: 緯創作為 AI 伺服器基板與主機板關鍵供應商，直接受益於需求爆發與代工廠產能逼近滿載。強勁的訂單能見度提供中長期業績成長的極佳保障。
+2026-09-05 11:13:07,054 [INFO] MarketSentinel — 
+🔴 📈 [2308.TW] 台達電
+  事件：AI伺服器需求爆發 先進封裝交期破半年
+  摘要：生成式 AI 熱潮帶動全球 AI 伺服器需求大增，輝達（NVIDIA）新一代 GPU 採用的 CoWoS 先進封裝產能嚴重吃緊，導致交期拉長至六個月以上。儘管晶圓代工廠全力擴產，短期仍難解供不應求現狀...
+  情緒: Positive | 方向: Bullish
+  Impact: 78.0 | Surprise: 35.0 | 信心: 0.9
+  時間範圍: Long-term | 分類: Signal
+  分析: 新聞點名電源供應器及散熱模組拉貨動能強勁，台達電作為雙領域龍頭將顯著受益。AI 伺服器架構升級帶動瓦數與散熱規格大幅提升，有利於產品平均單價（ASP）與毛利率拉升。
+2026-09-05 11:13:07,055 [INFO] MarketSentinel — 
+🔴 📈 [3711.TW] 日月光投控
+  事件：AI伺服器需求爆發 先進封裝交期破半年
+  摘要：生成式 AI 熱潮帶動全球 AI 伺服器需求大增，輝達（NVIDIA）新一代 GPU 採用的 CoWoS 先進封裝產能嚴重吃緊，導致交期拉長至六個月以上。儘管晶圓代工廠全力擴產，短期仍難解供不應求現狀...
+  情緒: Positive | 方向: Bullish
+  Impact: 75.0 | Surprise: 40.0 | 信心: 0.88
+  時間範圍: Long-term | 分類: Signal
+  分析: 晶圓代工廠 CoWoS 產能嚴重不足，將促使部分外圍封裝與測試訂單加速外溢至日月光投控。封測龍頭未來在先進封裝供應鏈中的參與度與市占率可望進一步提升。
+2026-09-05 11:13:07,055 [INFO] MarketSentinel — 
+🔴 📈 [2317.TW] 鴻海
+  事件：AI伺服器需求爆發 先進封裝交期破半年
+  摘要：生成式 AI 熱潮帶動全球 AI 伺服器需求大增，輝達（NVIDIA）新一代 GPU 採用的 CoWoS 先進封裝產能嚴重吃緊，導致交期拉長至六個月以上。儘管晶圓代工廠全力擴產，短期仍難解供不應求現狀...
+  情緒: Positive | 方向: Bullish
+  Impact: 75.0 | Surprise: 30.0 | 信心: 0.88
+  時間範圍: Long-term | 分類: Signal
+  分析: AI 伺服器需求爆發與產能滿載確認了電子組裝龍頭的成長方向。鴻海在 AI 機櫃與伺服器垂直整合能力強，訂單延伸至明年有助於提升市場對其伺服器事業營收占比擴大的信心。
+2026-09-05 11:13:07,055 [INFO] MarketSentinel — 
+🔴 📉 [1301.TW] 台塑
+  事件：地緣緊張推升油價週漲逾8% 石化業成本承壓
+  摘要：受中東地緣政治緊張影響，國際原油大漲，布蘭特原油單週漲幅逾8%。此舉直接推升PVC、PE及PP等塑膠原料成本，石化業者擬調漲售價。分析師認為若能順利轉嫁下游，對廠商影響有限；金融機構則密切關注油價波動...
+  情緒: Negative | 方向: Bearish
+  Impact: 65.0 | Surprise: 35.0 | 信心: 0.85
+  時間範圍: Short-term | 分類: Signal
+  分析: 原油價格快速上漲將直接推升台塑核心產品（如 PVC、PE 等）之原料成本，短線面臨毛利壓縮壓力。若終端需求不振致使售價無法完全轉嫁成本，將對短期獲利表現帶來負面衝擊。
+2026-09-05 11:13:07,055 [INFO] MarketSentinel — 
+⚪ ➡️ [2882.TW] 國泰金控
+  事件：地緣緊張推升油價週漲逾8% 石化業成本承壓
+  摘要：受中東地緣政治緊張影響，國際原油大漲，布蘭特原油單週漲幅逾8%。此舉直接推升PVC、PE及PP等塑膠原料成本，石化業者擬調漲售價。分析師認為若能順利轉嫁下游，對廠商影響有限；金融機構則密切關注油價波動...
+  情緒: Neutral | 方向: Neutral
+  Impact: 25.0 | Surprise: 20.0 | 信心: 0.8
+  時間範圍: Long-term | 分類: Noise
+  分析: 油價大漲引發的通膨預期可能影響央行貨幣政策走向，對壽險資產部位評價與銀行淨利息收入影響利弊互見。此消息對國泰金控屬於間接的總體經濟背景雜訊，短期無實質直接影響。
+2026-09-05 11:13:07,056 [INFO] MarketSentinel — 
+✅ Pipeline 完成！耗時 269.4 秒
+2026-09-05 11:13:07,056 [INFO] MarketSentinel — 結束時間: 2026-09-05 11:13:07

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Market Sentinel | AI 驅動的金融市場情報</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Boxicons for icons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar glass-panel">
+            <div class="logo-area">
+                <div class="logo-icon"><i class='bx bx-radar'></i></div>
+                <h1>Market Sentinel</h1>
+            </div>
+            
+            <nav class="main-nav">
+                <a href="#" class="nav-item active"><i class='bx bx-grid-alt'></i> 總覽儀表板</a>
+                <a href="#" class="nav-item"><i class='bx bx-news'></i> 即時事件監控</a>
+                <a href="#" class="nav-item"><i class='bx bx-buildings'></i> 供應鏈追蹤</a>
+                <a href="#" class="nav-item"><i class='bx bx-analyse'></i> 深度分析報告</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button id="export-powerbi-btn" class="primary-btn export-btn">
+                    <i class='bx bxs-file-export'></i> 匯出至 Power BI
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-header">
+                <div class="page-title">
+                    <h2>即時市場事件分析</h2>
+                    <p class="subtitle">AI 聚合市場事件並預測供應鏈影響力</p>
+                </div>
+                <div class="header-actions">
+                    <div class="status-indicator">
+                        <span class="pulse"></span> 系統即時監控中
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-grid">
+                <!-- Events List Panel -->
+                <section class="events-panel glass-panel">
+                    <div class="panel-header">
+                        <h3><i class='bx bx-list-ul'></i> 最新市場事件</h3>
+                        <span class="badge" id="event-count">0</span>
+                    </div>
+                    <div class="events-list" id="events-list">
+                        <!-- Events will be populated here by JS -->
+                        <div class="loading-spinner">載入資料中...</div>
+                    </div>
+                </section>
+
+                <!-- Impact Details Panel -->
+                <section class="impact-panel glass-panel">
+                    <div class="panel-header">
+                        <h3><i class='bx bx-target-lock'></i> 供應鏈影響分析</h3>
+                    </div>
+                    <div class="impact-content" id="impact-content">
+                        <!-- Default state -->
+                        <div class="empty-state">
+                            <i class='bx bx-pointer'></i>
+                            <p>請從左側選擇一個事件查看影響力分析</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- API configuration -->
+    <script>
+        const API_BASE_URL = 'http://localhost:8000/api';
+    </script>
+    <script src="app.js"></script>
+</body>
+</html>
